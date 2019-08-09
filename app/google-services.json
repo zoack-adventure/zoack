@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "893357909404",
+    "firebase_url": "https://zoack-81ab6.firebaseio.com",
+    "project_id": "zoack-81ab6",
+    "storage_bucket": "zoack-81ab6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893357909404:android:cdf40f4499cd2079",
+        "android_client_info": {
+          "package_name": "com.verisence.zoackadventures"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893357909404-e9i6q6f67r9dcd2vf0smuce862b2t3bj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.verisence.zoackadventures",
+            "certificate_hash": "c4c9fdc9c9aa5b5ffb996727176dfe35d1265632"
+          }
+        },
+        {
+          "client_id": "893357909404-9uk8gh5seu36dnpeubqvkdmnsov3tuml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2ytQ4X3dHCa4TJxfwPEKoddcJd43eKnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893357909404-9uk8gh5seu36dnpeubqvkdmnsov3tuml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
