@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -28,11 +29,12 @@ import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.adapters.FirebaseHotelViewHolder;
 import com.verisence.zoackadventures.models.Hotel;
+import com.verisence.zoackadventures.zoack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HotelsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HotelsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private DrawerLayout drawer;
     private DatabaseReference hotelsReference;
@@ -40,6 +42,8 @@ public class HotelsActivity extends AppCompatActivity implements NavigationView.
 
     @BindView(R.id.hotelsRecyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.contactDrawer)
+    TextView contactDrawer;
 
 
     @Override
@@ -72,7 +76,12 @@ public class HotelsActivity extends AppCompatActivity implements NavigationView.
 
     private void setUpFireBaseAdapter() {
         Bundle bundle = getIntent().getExtras();
-        String location = bundle.getString("current location");
+        String location = null;
+        if (bundle != null) {
+            location = bundle.getString("current location");
+        }else{
+            location = zoack.currentLoc;
+        }
         Log.d("HOTELS ACTIVITY", "setUpFireBaseAdapter: "+location);
         Query query = hotelsReference.orderByChild("location").equalTo(location);
         FirebaseRecyclerOptions<Hotel> options = new FirebaseRecyclerOptions.Builder<Hotel>()
@@ -108,6 +117,9 @@ public class HotelsActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_logout:
                 logout();
                 break;
+//            case R.id.nav_contact:
+//                startActivity(new Intent(HotelsActivity.this, ContactsActivity.class));
+//                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -143,6 +155,13 @@ public class HotelsActivity extends AppCompatActivity implements NavigationView.
         super.onStop();
         if (firebaseAdapter != null){
             firebaseAdapter.stopListening();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v==contactDrawer){
+            startActivity(new Intent(HotelsActivity.this, MainActivity.class));
         }
     }
 }

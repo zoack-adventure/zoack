@@ -21,6 +21,7 @@ import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.UI.HotelDetailActivity;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Hotel;
+import com.verisence.zoackadventures.zoack;
 
 import org.parceler.Parcels;
 
@@ -51,7 +52,9 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
 
         nameTextView.setText(hotel.getName());
 
-        this.hotelLocation = hotel.getLocation();
+        zoack.currentLoc = hotel.getLocation();
+
+        this.hotelLocation = zoack.currentLoc;
 
         Log.e("HOTELHOLDERBIND", "bindHotel: "+hotelLocation);
 

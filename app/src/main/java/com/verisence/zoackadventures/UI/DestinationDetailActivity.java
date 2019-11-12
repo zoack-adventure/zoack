@@ -1,10 +1,16 @@
 package com.verisence.zoackadventures.UI;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.adapters.DestinationPagerAdapter;
 import com.verisence.zoackadventures.models.Destination;
@@ -20,6 +26,8 @@ public class DestinationDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
+
+
     ArrayList<Destination> mDestinations = new ArrayList<>();
 
     @Override
@@ -29,13 +37,25 @@ public class DestinationDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mDestinations = Parcels.unwrap(getIntent().getParcelableExtra("destinations"));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        int startingPosition = getIntent().getIntExtra("position", 0);
+        final ActionBar actionBar=getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        ViewPager viewPager=findViewById(R.id.viewPager);
+        if(viewPager!=null)
+        {
 
-//        DestinationPagerAdapter adapterViewPager = new DestinationPagerAdapter(getSupportFragmentManager(), mDestinations);
-        DestinationPagerAdapter adapterViewPager = new DestinationPagerAdapter(getSupportFragmentManager(), mDestinations);
-        mViewPager.setAdapter(adapterViewPager);
-        mViewPager.setCurrentItem(startingPosition);
+            mDestinations = Parcels.unwrap(getIntent().getParcelableExtra("destinations"));
+
+            int startingPosition = getIntent().getIntExtra("position", 0);
+
+            DestinationPagerAdapter adapterViewPager = new DestinationPagerAdapter(getSupportFragmentManager(), mDestinations);
+            mViewPager.setAdapter(adapterViewPager);
+            mViewPager.setCurrentItem(startingPosition);
+        }
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 }

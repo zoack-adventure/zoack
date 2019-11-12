@@ -56,7 +56,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, view);
         Picasso.get().load(mHotel.getImageUrl()).into(mImageLabel);
         mNameLabel.setText(mHotel.getName());
-//        mHotelDescription.setText(mHotel.getPrice());
+        mHotelDescription.setText(String.valueOf(mHotel.getPrice()));
         mBookHotel.setOnClickListener(this);
         return view;
     }

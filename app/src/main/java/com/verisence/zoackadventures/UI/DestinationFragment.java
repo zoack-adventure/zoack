@@ -1,6 +1,7 @@
 package com.verisence.zoackadventures.UI;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
     @BindView(R.id.viewHotels)
     Button mViewHotels;
 
-
+    AlertDialog.Builder descDialog;
 
     private Destination mDestination;
 
@@ -56,6 +57,11 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        descDialog = new AlertDialog.Builder(getActivity());
+        descDialog.setTitle("Dialog via Builder");
+        descDialog.setMessage("Would you like to take a survey?");
+
         View view = inflater.inflate(R.layout.fragment_destination_list, container, false);
         ButterKnife.bind(this, view);
         Picasso.get().load(mDestination.getImageUrl()).into(mImageLabel);
@@ -76,5 +82,9 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
             ((Activity) getActivity()).overridePendingTransition(0, 0);
         }
 
+        if (v==mDestinationDescription){
+            descDialog.setPositiveButton("CLOSE", (dialog, which) -> dialog.dismiss());
+            descDialog.show();
+        }
     }
 }
