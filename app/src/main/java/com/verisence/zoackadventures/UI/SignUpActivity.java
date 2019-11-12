@@ -1,4 +1,4 @@
-package com.verisence.zoackadventures;
+package com.verisence.zoackadventures.UI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.verisence.zoackadventures.MainActivity;
+import com.verisence.zoackadventures.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

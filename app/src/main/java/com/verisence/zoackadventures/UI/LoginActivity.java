@@ -1,4 +1,4 @@
-package com.verisence.zoackadventures;
+package com.verisence.zoackadventures.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.verisence.zoackadventures.MainActivity;
+import com.verisence.zoackadventures.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

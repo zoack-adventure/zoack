@@ -1,10 +1,11 @@
-package com.verisence.zoackadventures;
+package com.verisence.zoackadventures.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
+import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.adapters.HotelPagerAdapter;
 import com.verisence.zoackadventures.models.Hotel;
 

@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 //import com.example.mydestination.models.Destination;
 //import com.example.mydestination.ui.DestinationDetailFragment;
-import com.verisence.zoackadventures.DestinationFragment;
+import com.verisence.zoackadventures.UI.DestinationFragment;
 import com.verisence.zoackadventures.models.Destination;
 
 import java.util.ArrayList;

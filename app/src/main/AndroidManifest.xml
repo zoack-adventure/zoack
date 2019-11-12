@@ -13,21 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="androidx.multidex.MultiDexApplication">
-        <activity android:name=".HotelDetailActivity"></activity>
-        <activity android:name=".HotelsActivity" />
-        <activity android:name=".DestinationDetailActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SplashActivity">
+        android:name=".zoack">
+        <activity android:name=".UI.HotelDetailActivity"></activity>
+        <activity android:name=".UI.HotelsActivity" />
+        <activity android:name=".UI.DestinationDetailActivity" />
+        <activity android:name=".UI.ProfileActivity" />
+        <activity android:name=".UI.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".UI.MainActivity" />
+        <activity android:name=".UI.LoginActivity" />
+        <activity android:name=".UI.SignUpActivity" />
     </application>
 
 </manifest>

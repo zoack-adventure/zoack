@@ -2,7 +2,6 @@ package com.verisence.zoackadventures.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +18,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
-import com.verisence.zoackadventures.HotelDetailActivity;
+import com.verisence.zoackadventures.UI.HotelDetailActivity;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Hotel;
 
@@ -67,6 +66,7 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
 //        final String location = "Diani";
         Log.e("HOTELHOLDERONCLICK", "bindHotel: "+hotelLocation);
         final Query hotelsByLocation = reference.orderByChild("location").equalTo(hotelLocation);
+        hotelsByLocation.keepSynced(true);
         hotelsByLocation.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

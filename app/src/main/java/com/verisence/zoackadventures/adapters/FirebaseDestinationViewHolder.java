@@ -2,7 +2,6 @@ package com.verisence.zoackadventures.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
-import com.verisence.zoackadventures.DestinationDetailActivity;
+import com.verisence.zoackadventures.UI.DestinationDetailActivity;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Destination;
 
@@ -55,6 +54,7 @@ public class FirebaseDestinationViewHolder extends RecyclerView.ViewHolder imple
     public void onClick(View v) {
         final ArrayList<Destination> destinations = new ArrayList<>();
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_DESTINATIONS);
+        reference.keepSynced(true);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

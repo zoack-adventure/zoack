@@ -1,4 +1,4 @@
-package com.verisence.zoackadventures;
+package com.verisence.zoackadventures.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.verisence.zoackadventures.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
