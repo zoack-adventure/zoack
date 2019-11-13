@@ -99,11 +99,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     navUsername.setText(name);
                     navEmail.setText(email);
 //                    phoneTv.setText(phone);
-//                    try {
-//                        Picasso.get().load(image).into(navImage);
-//                    } catch (Exception e) {
-//                        Picasso.get().load(R.drawable.ic_face_black_24dp).into(navImage);
-//                    }
+                    try {
+                        Picasso.get().load(image).into(navImage);
+                    } catch (Exception e) {
+                        Picasso.get().load(R.drawable.ic_face_black_24dp).into(navImage);
+                    }
 //                    try {
 //                        Picasso.get().load(cover).into(coverIv);
 //                    } catch (Exception e) {

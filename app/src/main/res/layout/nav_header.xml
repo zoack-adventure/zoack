@@ -10,15 +10,17 @@
 
     <ImageView
         android:id="@+id/nav_header_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/img"
+        android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher_round"/>
 
     <TextView
         android:id="@+id/nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Verisence 2019"
+        android:text="Name"
         android:paddingTop="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
@@ -26,7 +28,7 @@
         android:id="@+id/nav_header_mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="mail@verisence.com"
+        android:text="Email"
         android:paddingTop="8dp"/>
 
 </LinearLayout>
