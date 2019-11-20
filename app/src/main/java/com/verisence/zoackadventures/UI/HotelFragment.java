@@ -1,5 +1,7 @@
 package com.verisence.zoackadventures.UI;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,12 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     TextView mNameLabel;
     @BindView(R.id.hotelDescTextView)
     TextView mHotelDescription;
+    @BindView(R.id.phoneTextView)
+    TextView mHotelPhone;
+    @BindView(R.id.addressTextView)
+    TextView mHotelAddress;
+    @BindView(R.id.hotelPrice)
+    TextView mHotelPrice;
     @BindView(R.id.bookHotel)
     Button mBookHotel;
 
@@ -56,8 +64,15 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, view);
         Picasso.get().load(mHotel.getImageUrl()).into(mImageLabel);
         mNameLabel.setText(mHotel.getName());
-        mHotelDescription.setText(String.valueOf(mHotel.getPrice()));
+        mHotelPrice.setText("Kshs. "+String.valueOf(mHotel.getPrice()));
+        mHotelDescription.setText(mHotel.getDescription());
+        mHotelPhone.setText(mHotel.getPhone());
+        mHotelAddress.setText(mHotel.getAddress());
         mBookHotel.setOnClickListener(this);
+
+        mHotelPhone.setOnClickListener(this);
+        mHotelAddress.setOnClickListener(this);
+
         return view;
     }
 
@@ -69,6 +84,22 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 //            startActivity(i);
 //            ((Activity) getActivity()).overridePendingTransition(0, 0);
 //        }
+        if (v==mHotelAddress){
+            Double lat = mHotel.getLatitude();
+            Double longitude = mHotel.getLongitude();
+            Uri gmmIntentUri = Uri.parse("geo:" + lat
+                    + "," + longitude
+                    + "?q=(" + mHotel.getName() + ")");
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        }
+
+        if (v == mHotelPhone) {
+            Intent phoneIntent = new Intent(Intent.ACTION_DIAL,
+                    Uri.parse("tel:" + mHotel.getPhone()));
+            startActivity(phoneIntent);
+        }
 
     }
 }

@@ -45,12 +45,14 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
         ImageView hotelImageView = mView.findViewById(R.id.hotelImageView);
         ImageView hotelImage = mView.findViewById(R.id.imageHotel);
         TextView nameTextView = (TextView) mView.findViewById(R.id.hotelNameTextView);
+        TextView rating = mView.findViewById(R.id.ratingTv);
 //        TextView descriptionTextView = (TextView) mView.findViewById(R.id.hotelDescTextView);
 
         Picasso.get().load(hotel.getImageUrl()).into(hotelImageView);
         Picasso.get().load(hotel.getImageUrl()).into(hotelImage);
 
         nameTextView.setText(hotel.getName());
+        rating.setText(String.valueOf(hotel.getRating()));
 
         zoack.currentLoc = hotel.getLocation();
 
