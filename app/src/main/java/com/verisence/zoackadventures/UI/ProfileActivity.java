@@ -1,5 +1,13 @@
 package com.verisence.zoackadventures.UI;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -11,7 +19,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,21 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +38,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -49,10 +46,11 @@ import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ProfileActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
 
@@ -63,8 +61,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     StorageReference storageReference;
     String storagePath = "Users_Profile_Cover_Imgs/";
 
-    ImageView avatarIv, coverIv;
+    ImageView profileImg;
     TextView nameTv, emailTv, phoneTv;
+
     FloatingActionButton fab;
     ProgressDialog pd;
 
@@ -72,18 +71,19 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     String[] storagePermissions;
 
     Uri image_uri;
+//    private Uri filePath;
 
-    String profileOrCover;
+    String profileOrCover="image";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+//        drawer = findViewById(R.id.drawer_layout);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -94,12 +94,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         cameraPermissions = new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        avatarIv= findViewById(R.id.avatarIv);
-        coverIv= findViewById(R.id.coverIv);
-        nameTv = findViewById(R.id.nameTv);
-        emailTv = findViewById(R.id.emailTv);
-        phoneTv = findViewById(R.id.phoneTv);
-        fab = findViewById(R.id.fab);
+        profileImg = findViewById(R.id.profileImg);
+        nameTv = findViewById(R.id.name);
+        emailTv = findViewById(R.id.email);
+        phoneTv = findViewById(R.id.phone);
+        fab = this.findViewById(R.id.fab);
         pd = new ProgressDialog(ProfileActivity.this);
 
         //search all nodes for users whose key named email is equal to the signed in email
@@ -114,21 +113,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     String email = "" + ds.child("email").getValue();
                     String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
-                    String cover = "" + ds.child("cover").getValue();
 
                     //set data
                     nameTv.setText(name);
                     emailTv.setText(email);
                     phoneTv.setText(phone);
                     try {
-                        Picasso.get().load(image).into(avatarIv);
+                        Picasso.get().load(image).into(profileImg);
                     } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_face_black_24dp).into(avatarIv);
-                    }
-                    try {
-                        Picasso.get().load(cover).into(coverIv);
-                    } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_add_image_foreground).into(avatarIv);
+                        Picasso.get().load(R.drawable.ic_tag_faces_black_24dp).into(profileImg);
                     }
                 }
 
@@ -146,16 +139,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 showEditProfileDialog();
             }
         });
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-//        checkUserStatus();
-
     }
 
     private boolean checkStoragePermission() {
@@ -165,7 +148,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private void requestStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat.requestPermissions( ProfileActivity.this,storagePermissions, Constants.STORAGE_REQUEST_CODE);
+            requestPermissions( storagePermissions, Constants.STORAGE_REQUEST_CODE);
         }
     }
 
@@ -175,14 +158,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         return result && result1;
     }
     private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(ProfileActivity.this, cameraPermissions, Constants.STORAGE_REQUEST_CODE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            requestPermissions( cameraPermissions, Constants.STORAGE_REQUEST_CODE);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(cameraPermissions, Constants.CAMERA_REQUEST_CODE);
+        }
     }
 
     private void showEditProfileDialog() {
-        String[] options = {"Edit Profile Photo", "Edit Cover Photo", "Edit Name", "Edit Phone"};
+        String[] options = {"Edit Profile Photo", "Edit Name", "Edit Phone"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
         builder.setTitle("Choose Action");
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -190,16 +172,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0){
                     pd.setMessage("Updating Profile Photo");
-                    profileOrCover = "image";
+//                    profileOrCover = "image";
                     showImagePicDialog();
                 }else if (which == 1){
-                    pd.setMessage("Updating Cover Photo");
-                    profileOrCover = "cover";
-                    showImagePicDialog();
-                }else if (which == 2){
                     pd.setMessage("Updating Name");
                     showNamePhoneUpdateDialog("name");
-                }else if (which == 3){
+                }else if (which == 2){
                     pd.setMessage("Updating Phone");
                     showNamePhoneUpdateDialog("phone");
                 }
@@ -208,7 +186,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         builder.create().show();
     }
 
-    private void showNamePhoneUpdateDialog(String key) {
+    private void showNamePhoneUpdateDialog(final String key) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
         builder.setTitle("Update "+key);
@@ -217,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(10,10,10,10);
 
-        EditText editText = new EditText(ProfileActivity.this);
+        final EditText editText = new EditText(ProfileActivity.this);
         editText.setHint("Enter "+key);
         linearLayout.addView(editText);
 
@@ -315,9 +293,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             break;
             case Constants.STORAGE_REQUEST_CODE: {
                 if (grantResults.length > 0) {
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted&&writeStorageAccepted){
+//                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (writeStorageAccepted){
                         pickFromGallery();
                     } else {
                         Toast.makeText(this, "Please Enable Storage Permission", Toast.LENGTH_SHORT).show();
@@ -331,8 +309,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
             if (requestCode == Constants.IMAGE_PICK_GALLERY_REQUEST_CODE) {
 
                 image_uri = data.getData();
@@ -351,49 +329,54 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     }
 
     private void uploadProfileCoverPhoto(Uri uri) {
-
+        pd.setTitle("Uploading...");
         pd.show();
 
         String filePathAndName = storagePath + "" + profileOrCover +"_"+user.getUid();
 
-        StorageReference storageReference2 = storageReference.child(filePathAndName);
-        storageReference2.putFile(uri)
+        StorageReference ref = storageReference.child(filePathAndName);
+        ref.putFile(image_uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful());
-                        
-                        Uri downloadUri = uriTask.getResult();
-                        
-                        if (uriTask.isSuccessful()){
-                            HashMap<String, Object> results = new HashMap<>();
-                            results.put(profileOrCover, downloadUri.toString());
+                        pd.dismiss();
 
-                            databaseReference.child(user.getUid()).updateChildren(results)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
+                        Toast.makeText(ProfileActivity.this, "Profile Picture Uploaded", Toast.LENGTH_SHORT).show();
 
-                                            pd.dismiss();
-                                            Toast.makeText(ProfileActivity.this, "Image Updated...", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                            pd.dismiss();
-                                            Toast.makeText(ProfileActivity.this, "Error Updating Image...", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    });
-                        } else {
-                            pd.dismiss();
-                            Toast.makeText(ProfileActivity.this, "Some Error Occurred", Toast.LENGTH_SHORT).show();
-                        }
+//                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+//                        while (!uriTask.isSuccessful());
+//
+//                        Uri downloadUri = uriTask.getResult();
+//
+//                        if (uriTask.isSuccessful()){
+//                            HashMap<String, Object> results = new HashMap<>();
+//                            assert downloadUri != null;
+//                            results.put(profileOrCover, downloadUri.toString());
+//
+//                            databaseReference.child(user.getUid()).updateChildren(results)
+//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//
+//                                            pd.dismiss();
+//                                            Toast.makeText(ProfileActivity.this, "Image Updated...", Toast.LENGTH_SHORT).show();
+//
+//                                        }
+//                                    })
+//                                    .addOnFailureListener(new OnFailureListener() {
+//                                        @Override
+//                                        public void onFailure(@NonNull Exception e) {
+//
+//                                            pd.dismiss();
+//                                            Toast.makeText(ProfileActivity.this, "Error Updating Image...", Toast.LENGTH_SHORT).show();
+//
+//                                        }
+//                                    });
+//                        } else {
+//                            pd.dismiss();
+//                            Toast.makeText(ProfileActivity.this, "Some Error Occurred", Toast.LENGTH_SHORT).show();
+//                        }
 
                     }
                 })
@@ -402,10 +385,17 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     public void onFailure(@NonNull Exception e) {
 
                         pd.dismiss();
-                        Toast.makeText(ProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this,"Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
-                });
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                        .getTotalByteCount());
+                pd.setMessage("Uploaded "+(int)progress+"%");
+            }
+        });
 
     }
 
@@ -428,54 +418,5 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         startActivityForResult(galleryIntent, Constants.IMAGE_PICK_GALLERY_REQUEST_CODE);
     }
 
-    //    private void checkUserStatus() {
-//        FirebaseUser user = firebaseAuth.getCurrentUser();
-//
-//        if (user != null){
-//            //user is signed in and may stay..
-//            //set email of logged in user
-//            emailTv.setText(user.getEmail());
-//        } else {
-//            //user not signed in, go to login activity
-//            startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
-//            finish();
-//        }
-//    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_main:
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-                break;
-            case R.id.nav_profile:
-                startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
-                break;
-            case R.id.nav_logout:
-                logout();
-                break;
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
-
-    private void logout() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
-        }else {
-            super.onBackPressed();
-        }
-    }
 
 }

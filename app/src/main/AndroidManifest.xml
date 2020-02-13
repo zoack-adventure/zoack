@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".zoack"
@@ -14,27 +15,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.ContactsActivity"></activity>
+        <activity
+            android:name=".UI.ContactsActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".UI.HotelDetailActivity"
             android:label="Hotels"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.HotelsActivity"></meta-data>
         </activity>
         <activity
             android:name=".UI.HotelsActivity"
-            android:label="Hotels" />
+            android:label="Hotels"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".UI.DestinationDetailActivity"
-            android:label="Destinations">
+            android:label="Destinations"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.MainActivity"></meta-data>
         </activity>
-        <activity android:name=".UI.ProfileActivity" />
-        <activity android:name=".UI.SplashActivity">
+        <activity android:name=".UI.ProfileActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,10 +50,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".UI.MainActivity"
             android:label="Destinations" />
-        <activity android:name=".UI.LoginActivity" />
-        <activity android:name=".UI.SignUpActivity" />
+        <activity android:name=".UI.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UI.SignUpActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

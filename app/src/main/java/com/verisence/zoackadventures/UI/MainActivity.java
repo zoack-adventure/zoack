@@ -2,7 +2,6 @@ package com.verisence.zoackadventures.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +41,7 @@ import butterknife.ButterKnife;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private DrawerLayout drawer;
     private DatabaseReference destinationsReference;
@@ -58,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     StorageReference storageReference;
+    @BindView(R.id.contactDrawer)
+    TextView contactDrawer;
 
 
 
@@ -137,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        contactDrawer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
+        contactDrawer.setOnClickListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -215,6 +219,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
         if (firebaseAdapter != null){
             firebaseAdapter.stopListening();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v==contactDrawer){
+            startActivity(new Intent(MainActivity.this, ContactsActivity.class));
         }
     }
 }

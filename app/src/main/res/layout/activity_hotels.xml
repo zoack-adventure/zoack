@@ -46,7 +46,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/nav_view"
-        app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu">
 
         <LinearLayout
@@ -61,10 +60,9 @@
                 android:id="@+id/contactDrawer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="   Contact Us"
                 android:textColor="@color/blackText"
-                android:text="Contact Us"
-                android:textStyle="bold"
-                android:background="@color/colorPrimary"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>

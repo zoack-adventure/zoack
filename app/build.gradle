@@ -39,12 +39,12 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     //firebase
 //    implementation 'com.google.firebase:firebase-auth:16.1.0'
-    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.firebaseui:firebase-ui-database:3.3.1'
-    implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-database:19.2.0'
-    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+    implementation 'com.google.firebase:firebase-core:17.2.2'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
     implementation "com.firebaseui:firebase-ui-firestore:3.0.0"
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -64,8 +64,8 @@ dependencies {
     //Espresso dependencies
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     //butterknife
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     //parceler
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
@@ -76,6 +76,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 //    implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 }
 
 
