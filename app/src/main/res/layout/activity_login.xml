@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:background="@color/bg"
     android:fitsSystemWindows="true"
-    tools:context=".UI.LoginActivity">
+    tools:context=".UI.ContactsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/splash" />
+            app:srcCompat="@drawable/logo" />
 
 
         <EditText

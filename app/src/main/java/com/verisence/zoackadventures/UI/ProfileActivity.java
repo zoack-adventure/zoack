@@ -1,11 +1,13 @@
 package com.verisence.zoackadventures.UI;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
@@ -19,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +33,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,11 +52,19 @@ import com.verisence.zoackadventures.R;
 import java.util.HashMap;
 import java.util.UUID;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener  {
 
     private DrawerLayout drawer;
+
+    NavigationView navigationView;
+
+    @BindView(R.id.contactUs)
+    TextView contactDrawer;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -79,9 +91,24 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ButterKnife.bind(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        View view = navigationView.inflateHeaderView(R.layout.nav_header);
+        TextView navUsername = view.findViewById(R.id.nav_header_name);
+        TextView navEmail = view.findViewById(R.id.nav_header_mail);
+        ImageView navImage = view.findViewById(R.id.nav_header_photo);
+//        setUpFireBaseAdapter();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        storageReference = getInstance().getReference();
 
 //        drawer = findViewById(R.id.drawer_layout);
 
@@ -123,6 +150,15 @@ public class ProfileActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         Picasso.get().load(R.drawable.ic_tag_faces_black_24dp).into(profileImg);
                     }
+
+                    navUsername.setText(name);
+                    navEmail.setText(email);
+//                    phoneTv.setText(phone);
+                    try {
+                        Picasso.get().load(image).into(navImage);
+                    } catch (Exception e) {
+                        Picasso.get().load(R.drawable.ic_face_black_24dp).into(navImage);
+                    }
                 }
 
             }
@@ -132,6 +168,20 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        contactDrawer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
+        contactDrawer.setOnClickListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if (savedInstanceState == null) {
+            navigationView.setCheckedItem(R.id.nav_main);
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -416,6 +466,52 @@ public class ProfileActivity extends AppCompatActivity {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, Constants.IMAGE_PICK_GALLERY_REQUEST_CODE);
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_main:
+                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+                break;
+            case R.id.nav_profile:
+                startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        if (v==contactDrawer){
+            startActivity(new Intent(ProfileActivity.this, ContactsActivity.class));
+        }
     }
 
 
