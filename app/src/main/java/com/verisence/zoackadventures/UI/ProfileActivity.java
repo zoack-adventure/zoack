@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,7 +56,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.google.firebase.storage.FirebaseStorage.getInstance;
+//import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener  {
 
@@ -70,8 +71,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseStorage storage;
     StorageReference storageReference;
-    String storagePath = "Users_Profile_Cover_Imgs/";
+//    String storagePath = "Users_Profile_Cover_Imgs/";
 
     ImageView profileImg;
     TextView nameTv, emailTv, phoneTv;
@@ -82,10 +84,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     String[] cameraPermissions;
     String[] storagePermissions;
 
-    Uri image_uri;
+    private Uri image_uri;
 //    private Uri filePath;
 
-    String profileOrCover="image";
+//    String profileOrCover="image";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,15 +110,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
-        storageReference = getInstance().getReference();
-
-//        drawer = findViewById(R.id.drawer_layout);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users");
-        storageReference = getInstance().getReference();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         cameraPermissions = new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -382,7 +377,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         pd.setTitle("Uploading...");
         pd.show();
 
-        String filePathAndName = storagePath + "" + profileOrCover +"_"+user.getUid();
+        String filePathAndName = "Users_Profile_Cover_Imgs/image" +"_"+user.getUid();
 
         StorageReference ref = storageReference.child(filePathAndName);
         ref.putFile(image_uri)
@@ -399,11 +394,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 //
 //                        Uri downloadUri = uriTask.getResult();
 //
-//                        if (uriTask.isSuccessful()){
+//                        if (uriTask.isSuccessful()) {
 //                            HashMap<String, Object> results = new HashMap<>();
 //                            assert downloadUri != null;
-//                            results.put(profileOrCover, downloadUri.toString());
+//                            results.put("image", downloadUri.toString());
 //
+//                        }
 //                            databaseReference.child(user.getUid()).updateChildren(results)
 //                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                                        @Override
