@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/whiteC"
+        android:foreground="?attr/selectableItemBackground"
+        >
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:background="@drawable/roundbcg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hotelImageView"
+                android:src="@drawable/resimg"
+                android:visibility="invisible"
+                android:scaleType="centerCrop"/>
+
+            <!--            <ImageView-->
+
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:background="@color/black" />-->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/smallImg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:elevation="@dimen/cardview_default_elevation"
+                app:cardBackgroundColor="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/imageHotel"
+                    android:src="@drawable/resimg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:fontFamily="@font/robotobold"
+                android:id="@+id/hotelNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_below="@+id/smallImg"
+                android:maxLines="7"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/blackText"
+                android:textSize="20sp"
+                android:text="Hotel name"/>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="195dp"
+                android:layout_height="38dp"
+                android:layout_below="@+id/hotelNameTextView"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/robotobold"
+                android:gravity="center"
+                android:text="Number of Payments"
+                android:textColor="@color/blackText"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/numberOfPayments"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/hotelNameTextView"
+                android:layout_alignRight="@+id/textView3"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/dark_circle"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="52dp"
+                android:layout_marginRight="49dp"
+                android:gravity="center"
+                android:text="2" />
+
+            <TextView
+                android:padding="15dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/numberOfPayments"
+                android:background="@drawable/gradient"
+                android:paddingLeft="5dp"
+                android:textAllCaps="true"
+                android:textSize="15sp"
+                android:textColor="@color/whiteC"
+                android:fontFamily="@font/lato_medium"
+                android:text="view details"
+                android:drawablePadding="5dp"
+                />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

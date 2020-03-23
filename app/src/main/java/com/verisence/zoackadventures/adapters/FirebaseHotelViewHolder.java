@@ -2,9 +2,13 @@ package com.verisence.zoackadventures.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,14 +49,16 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
         ImageView hotelImageView = mView.findViewById(R.id.hotelImageView);
         ImageView hotelImage = mView.findViewById(R.id.imageHotel);
         TextView nameTextView = (TextView) mView.findViewById(R.id.hotelNameTextView);
-        TextView rating = mView.findViewById(R.id.ratingTv);
-//        TextView descriptionTextView = (TextView) mView.findViewById(R.id.hotelDescTextView);
+        RatingBar rb = (RatingBar) mView.findViewById(R.id.ratingBar1);
+        rb.setRating(Float.parseFloat(String.valueOf(hotel.getRating())));
+
+
 
         Picasso.get().load(hotel.getImageUrl()).into(hotelImageView);
         Picasso.get().load(hotel.getImageUrl()).into(hotelImage);
 
         nameTextView.setText(hotel.getName());
-        rating.setText(String.valueOf(hotel.getRating()));
+
 
         zoack.currentLoc = hotel.getLocation();
 

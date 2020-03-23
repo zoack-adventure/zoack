@@ -1,6 +1,7 @@
 package com.verisence.zoackadventures.UI;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,11 +33,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.littlemango.stacklayoutmanager.StackLayoutManager;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.adapters.FirebaseHotelViewHolder;
 import com.verisence.zoackadventures.models.Hotel;
+import com.verisence.zoackadventures.utils.OverlapDecoration;
 import com.verisence.zoackadventures.zoack;
 
 import butterknife.BindView;
@@ -135,6 +139,7 @@ public class HotelsActivity extends AppCompatActivity implements NavigationView.
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
+        toggle.getDrawerArrowDrawable().setColor(getColor(R.color.black));
         toggle.syncState();
 
         if (savedInstanceState == null) {
@@ -168,7 +173,11 @@ public class HotelsActivity extends AppCompatActivity implements NavigationView.
                 return new FirebaseHotelViewHolder(view);
             }
         };
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        mRecyclerView.addItemDecoration(new OverlapDecoration());
+        StackLayoutManager manager = new StackLayoutManager();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setLayoutManager(manager);
+//        mRecyclerView.smoothScrollToPosition(3);
         mRecyclerView.setAdapter(firebaseAdapter);
     }
 
