@@ -3,7 +3,7 @@ This is an android app that allows the user to search for holiday destinations a
 
 # Contributors
 * Phil Kipkemboi(kipkemboiphil@gmail.com)
-* Abigail Wambui()
+* Abigail Wambui(abigailw15njuguna@gmail.com)
 * Mbugua Mwaura()
 
 
