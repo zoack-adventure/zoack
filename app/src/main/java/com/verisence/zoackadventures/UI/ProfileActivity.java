@@ -16,6 +16,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -95,8 +96,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+
+
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
+
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -169,8 +175,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         contactDrawer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
         contactDrawer.setOnClickListener(this);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.whiteC));
+
+//        ActionBarDrawerToggle toggletwo = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -389,40 +398,40 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
                         Toast.makeText(ProfileActivity.this, "Profile Picture Uploaded", Toast.LENGTH_SHORT).show();
 
-//                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-//                        while (!uriTask.isSuccessful());
-//
-//                        Uri downloadUri = uriTask.getResult();
-//
-//                        if (uriTask.isSuccessful()) {
-//                            HashMap<String, Object> results = new HashMap<>();
-//                            assert downloadUri != null;
-//                            results.put("image", downloadUri.toString());
-//
-//                        }
-//                            databaseReference.child(user.getUid()).updateChildren(results)
-//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void aVoid) {
-//
-//                                            pd.dismiss();
-//                                            Toast.makeText(ProfileActivity.this, "Image Updated...", Toast.LENGTH_SHORT).show();
-//
-//                                        }
-//                                    })
-//                                    .addOnFailureListener(new OnFailureListener() {
-//                                        @Override
-//                                        public void onFailure(@NonNull Exception e) {
-//
-//                                            pd.dismiss();
-//                                            Toast.makeText(ProfileActivity.this, "Error Updating Image...", Toast.LENGTH_SHORT).show();
-//
-//                                        }
-//                                    });
-//                        } else {
-//                            pd.dismiss();
-//                            Toast.makeText(ProfileActivity.this, "Some Error Occurred", Toast.LENGTH_SHORT).show();
-//                        }
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful());
+
+                        Uri downloadUri = uriTask.getResult();
+
+                        if (uriTask.isSuccessful()) {
+                            HashMap<String, Object> results = new HashMap<>();
+                            assert downloadUri != null;
+                            results.put("image", downloadUri.toString());
+
+
+                            databaseReference.child(user.getUid()).updateChildren(results)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            pd.dismiss();
+                                            Toast.makeText(ProfileActivity.this, "Image Updated...", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            pd.dismiss();
+                                            Toast.makeText(ProfileActivity.this, "Error Updating Image...", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                        } else {
+                            pd.dismiss();
+                            Toast.makeText(ProfileActivity.this, "Some Error Occurred", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 })

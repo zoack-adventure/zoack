@@ -16,20 +16,36 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteC"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            android:background="@color/colorPrimary"
-            />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Destination Details"
+                android:textColor="@color/blackText"
+                android:textSize="20sp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/robotoblack_powx"
+                android:layout_gravity="right"
+                android:id="@+id/toolbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/whiteC"
+            app:tabIndicatorColor="@color/zoack_orange"
+            app:tabIndicatorFullWidth="true"
             app:tabIndicatorHeight="3dp"
-            app:tabIndicatorColor="@color/whiteC"
             app:tabMode="scrollable"
-            />
+            app:tabRippleColor="@color/light_blue"
+            app:tabTextAppearance="@style/NavigationTabTextAppeareance"
+            app:tabTextColor="@color/blackText" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

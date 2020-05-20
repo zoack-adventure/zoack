@@ -4,16 +4,17 @@ import org.parceler.Parcel;
 
 @Parcel
 public class Hotel {
-    private String name;
-    private int price;
-    private String imageUrl;
-    private String location;
-    private Double latitude;
-    private Double longitude;
-    private String phone;
-    private String address;
-    private String description;
-    private Double rating;
+    public String name;
+    public int price;
+    public String imageUrl;
+    public String location;
+    public Double latitude;
+    public Double longitude;
+    public String phone;
+    public String address;
+    public String description;
+    public Double rating;
+    public String pushID;
 
 
     public Hotel() {}
@@ -29,6 +30,15 @@ public class Hotel {
         this.address = address;
         this.description = description;
         this.rating = rating;
+        this.pushID = "no push ID set";
+    }
+
+    public String getPushID() {
+        return pushID;
+    }
+
+    public void setPushID(String pushID) {
+        this.pushID = pushID;
     }
 
     public Double getLatitude() {

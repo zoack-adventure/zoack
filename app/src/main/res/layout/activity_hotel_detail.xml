@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".UI.HotelDetailActivity">
+    android:background="@color/whiteC"
+    tools:context=".UI.DestinationDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -16,18 +17,34 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteC"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            android:background="@color/colorPrimary"
-            />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hotel Details"
+                android:textColor="@color/blackText"
+                android:textSize="20sp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/robotoblack_powx"
+                android:layout_gravity="right"
+                android:id="@+id/toolbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/whiteC"
+            app:tabTextColor="@color/blackText"
+            app:tabTextAppearance="@style/NavigationTabTextAppeareance"
+            app:tabRippleColor="@color/zoack_orange"
             app:tabIndicatorHeight="3dp"
-            app:tabIndicatorColor="@color/whiteC"
+            app:tabIndicatorColor="@color/zoack_orange"
+            app:tabIndicatorFullWidth="true"
             app:tabMode="scrollable"
             />
     </com.google.android.material.appbar.AppBarLayout>
@@ -39,20 +56,5 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-<!--    <androidx.viewpager.widget.ViewPager-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:id="@+id/viewPager"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--        <androidx.viewpager.widget.PagerTabStrip-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/pagerHeader"-->
-<!--            android:layout_gravity="top"-->
-<!--            android:paddingBottom="4dp"-->
-<!--            android:paddingTop="4dp" />-->
-
-<!--    </androidx.viewpager.widget.ViewPager>-->
 
 </RelativeLayout>

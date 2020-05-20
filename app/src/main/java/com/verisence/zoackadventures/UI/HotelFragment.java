@@ -1,5 +1,6 @@
 package com.verisence.zoackadventures.UI;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -7,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -33,12 +36,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.ramotion.foldingcell.FoldingCell;
 import com.squareup.picasso.Picasso;
+import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.Mpesa.ApiClient;
 import com.verisence.zoackadventures.Mpesa.model.AccessToken;
 import com.verisence.zoackadventures.Mpesa.model.STKPush;
 import com.verisence.zoackadventures.Mpesa.utils;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Hotel;
+import com.verisence.zoackadventures.models.Payment;
+import com.verisence.zoackadventures.utils.Helpers;
 
 import org.parceler.Parcels;
 
@@ -58,6 +64,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
+import static com.verisence.zoackadventures.Constants.KSH;
 import static com.verisence.zoackadventures.Mpesa.AppConstants.BUSINESS_SHORT_CODE;
 import static com.verisence.zoackadventures.Mpesa.AppConstants.CALLBACKURL;
 import static com.verisence.zoackadventures.Mpesa.AppConstants.PARTYB;
@@ -79,8 +86,10 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     TextView mHotelPrice;
     @BindView(R.id.bookHotel)
     Button mBookHotel;
+    @BindView(R.id.favoriteBtn)
+    ImageView favoriteBtn;
 
-
+    AlertDialog alertDialog;
 
     private Hotel mHotel;
 
@@ -98,7 +107,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     public static TextView child_count;
     public static TextView travelers_count;
     public static TextView totalPrice;
-    public static final String DATE_FORMAT = "d/M/yyyy";
+    public static final String DATE_FORMAT = "d - M - yyyy";
     public static Button payBtn;
     private ApiClient mApiClient;
     private ProgressDialog mProgressDialog;
@@ -108,9 +117,11 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     DatabaseReference databaseReference;
     StorageReference storageReference;
     String phoneNumber;
+    Helpers helpers;
+
+
 
     public static Fragment newInstance(Hotel hotel) {
-        // Required empty public constructor
         HotelFragment hotelFragment = new HotelFragment();
         Bundle args = new Bundle();
         args.putParcelable("hotel", Parcels.wrap(hotel));
@@ -130,9 +141,19 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hotel_list, container, false);
         ButterKnife.bind(this, view);
+
         Picasso.get().load(mHotel.getImageUrl()).into(mImageLabel);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference savedHotelRef = FirebaseDatabase
+                .getInstance()
+                .getReference(Constants.FIREBASE_CHILD_SAVED_HOTELS)
+                .child(uid);
+
+
         mNameLabel.setText(mHotel.getName());
-        mHotelPrice.setText("Kshs. "+String.valueOf(mHotel.getPrice()));
+        mHotelPrice.setText("Kshs. "+Helpers.numberWithCommas((long)(mHotel.getPrice())));
         mHotelDescription.setText(mHotel.getDescription());
         mHotelPhone.setText(mHotel.getPhone());
         mHotelAddress.setText(mHotel.getAddress());
@@ -140,6 +161,29 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         mHotelPhone.setOnClickListener(this);
         mHotelAddress.setOnClickListener(this);
+        favoriteBtn.setOnClickListener(this);
+
+        Query query = savedHotelRef;
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    if(snapshot != null){
+                        String favoriteHotel =""+ snapshot.child("name").getValue();
+                        if(favoriteHotel.equals(mHotel.getName())){
+                            favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
         return view;
@@ -173,8 +217,8 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         if(v == mBookHotel){
 //            Toast.makeText(getContext(),String.valueOf(mHotel.getPrice()),Toast.LENGTH_LONG).show();
             final Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.book_card);
-            top_text = (TextView) dialog.findViewById(R.id.top_text);
+            dialog.setContentView(R.layout.booking_dialog);
+//            top_text = (TextView) dialog.findViewById(R.id.top_text);
             top_text_two = (TextView) dialog.findViewById(R.id.top_text_two);
             startBtn = (Button) dialog.findViewById(R.id.start_date_btn);
             endBtn = (Button) dialog.findViewById(R.id.end_date_btn);
@@ -186,7 +230,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             child_add_btn = (Button) dialog.findViewById(R.id.child_add_btn);
             child_minus_btn = (Button) dialog.findViewById(R.id.child_minus_btn);
             child_count = (TextView) dialog.findViewById(R.id.child_count);
-            travelers_count = (TextView) dialog.findViewById(R.id.traveler_count);
+//            travelers_count = (TextView) dialog.findViewById(R.id.traveler_count);
             totalPrice = (TextView) dialog.findViewById(R.id.total_price);
             payBtn = (Button) dialog.findViewById(R.id.payBtn);
             final long[] price = {0};
@@ -236,40 +280,13 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                     showToDatePickerDialog(view);
                 }
             });
-            final FoldingCell fc = (FoldingCell) dialog.findViewById(R.id.folding_cell);
-            final FoldingCell fc2 = (FoldingCell) dialog.findViewById(R.id.folding_cell_two);
-
-            fc.initialize(500, Color.TRANSPARENT, 2);
-            fc2.initialize(500, Color.TRANSPARENT, 2);
-
-            fc.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fc.toggle(false);
-                }
-            });
-
-            fc2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fc2.toggle(false);
-
-                    if(adultNumber[0] > 0 && childNumber[0] > 0){
-                        String children = childNumber[0] > 1 ? String.valueOf(childNumber[0]) + " children": String.valueOf(childNumber[0]) + " child";
-                        String adult = adultNumber[0] > 1 ? String.valueOf(adultNumber[0]) + " adults" : String.valueOf(adultNumber[0]) + " adult";
-                        travelers_count.setText(adult +" and "+ children);
-                    }else if(adultNumber[0] > 0 && childNumber[0] == 0){
-                        String adult = adultNumber[0] > 1 ? String.valueOf(adultNumber[0]) + " adults" : String.valueOf(adultNumber[0]) + " adult";
-                        travelers_count.setText(adult);
-                    }
-                }
-            });
 
             adult_add_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adultNumber[0] = adultNumber[0] +1;
-                    adult_count.setText(String.valueOf(adultNumber[0]));
+                    adult_count.setText(travellerNumber(adultNumber[0],"adult"));
+                    totalPrice.setText(  KSH + Helpers.numberWithCommas(getPrice(adultNumber[0])));
                 }
             });
             adult_minus_btn.setOnClickListener(new View.OnClickListener() {
@@ -277,19 +294,21 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 public void onClick(View view) {
                     adultNumber[0] = adultNumber[0] -1;
                     if (adultNumber[0] > 0) {
-                        adult_count.setText(String.valueOf(adultNumber[0]));
+                        adult_count.setText(travellerNumber(adultNumber[0],"adult"));
+                        totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0])));
                     } else {
                         adultNumber[0] = 0;
-                        adult_count.setText(String.valueOf(adultNumber[0]));
+                        adult_count.setText(travellerNumber(adultNumber[0],"adult"));
+                        totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0])));
                     }
                 }
             });
-
+//
             child_add_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     childNumber[0] = childNumber[0] +1;
-                    child_count.setText(String.valueOf(childNumber[0]));
+                    child_count.setText(travellerNumber(childNumber[0],"child"));
                 }
             });
             child_minus_btn.setOnClickListener(new View.OnClickListener() {
@@ -297,41 +316,52 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 public void onClick(View view) {
                     childNumber[0] = childNumber[0] -1;
                     if (childNumber[0] > 0) {
-                        child_count.setText(String.valueOf(childNumber[0]));
+                        child_count.setText(travellerNumber(childNumber[0],"child"));
                     } else {
                         childNumber[0] = 0;
-                        child_count.setText(String.valueOf(childNumber[0]));
+                        child_count.setText(travellerNumber(childNumber[0],"child"));
                     }
 
 
                 }
             });
-            totalPrice.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) > 0 && (childNumber[0] > 0 || adultNumber[0] > 0)) {
-                        price[0] = getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * adultNumber[0];
-                        totalPrice.setText("Ksh. " + String.valueOf(myFormat.format(price[0])));
-                    }
-                }
-            });
-
+//
+//
             payBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //need to get the proper phone number
-                    performSTKPush(phoneNumber,String.valueOf(price[0]));
+                    performSTKPush(phoneNumber,String.valueOf(10));
                 }
             });
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.roundbcg);
+
             dialog.show();
 
 
         }
+
+        if(v == favoriteBtn){
+
+//            alertDialog.setMessage("Would you like to add " + mHotel.getName() + " to your favorites list?");
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+            DatabaseReference savedHotelRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(Constants.FIREBASE_CHILD_SAVED_HOTELS)
+                    .child(uid);
+
+            DatabaseReference pushRef = savedHotelRef.push();
+            String pushId = pushRef.getKey();
+            mHotel.setPushID(pushId);
+            pushRef.setValue(mHotel);
+            favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+
+        }
     }
     public void performSTKPush(String phone_number, String amount) {
-        mProgressDialog.setMessage("Sending Mpesa payment request to " + phone_number);
+        mProgressDialog.setMessage("Sending Mpesa payment request of "+amount+" to " + phone_number);
+        mProgressDialog.setCancelable(true);
         mProgressDialog.setTitle("Please Wait...");
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -340,7 +370,6 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
         String timestamp = utils.getTimestamp();
         STKPush stkPush = new STKPush(
@@ -359,14 +388,36 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         mApiClient.setGetAccessToken(false);
 
+
         mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
             @Override
             public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
                 mProgressDialog.dismiss();
                 try {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(),"Payment successful",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Payment request sent successfully",Toast.LENGTH_LONG).show();
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>"+response);
                         Timber.d("post submitted to API. %s", response.body());
+
+                        Payment payment = new Payment();
+                        payment.setAdults((adult_count.getText().toString()));
+                        payment.setChildren((child_count.getText().toString()));
+                        payment.setArrivalDate(fromdate.getText().toString());
+                        payment.setDepartureDate(todate.getText().toString());
+                        payment.setTransactionDate(new Date().toString());
+                        payment.setHotel(mHotel);
+                        payment.setAmount(totalPrice.getText().toString());
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        DatabaseReference savedPaymentRef = FirebaseDatabase
+                                .getInstance()
+                                .getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid);
+
+                        DatabaseReference pushRef = savedPaymentRef.push();
+                        String pushId = pushRef.getKey();
+                        payment.setPushID(pushId);
+                        pushRef.setValue(payment);
                     } else {
                         Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
                         Timber.e("Response %s", response.errorBody().string());
@@ -422,14 +473,14 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             DatePickerDialog datePickerDialog;
             datePickerDialog = new DatePickerDialog(getActivity(),this, year,
                     month,day);
+
             return datePickerDialog;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-            fromdate.setTextColor(Color.WHITE);
-            fromdate.setTextSize(20);
-            fromdate.setText(day + "/" + month  + "/" + year);
+            fromdate.setTextColor(getResources().getColor(R.color.black));
+            fromdate.setText(day + " - " + month  + " - " + year);
         }
 
     }
@@ -441,7 +492,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
             String getfromdate = fromdate.getText().toString().trim();
-            String getfrom[] = getfromdate.split("/");
+            String getfrom[] = getfromdate.split(" - ");
             int year, month, day;
             year = Integer.parseInt(getfrom[2]);
             month = Integer.parseInt(getfrom[1]);
@@ -456,14 +507,9 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
 
-            todate.setText(day + "/" + month + "/" + year);
-            todate.setTextSize(20);
-            todate.setTextColor(Color.WHITE);
+            todate.setText(day + " - " + month + " - " + year);
+            todate.setTextColor(getResources().getColor(R.color.black));
 
-            long Days = getDaysBetweenDates(fromdate.getText().toString(),todate.getText().toString());
-            String DaysString = String.valueOf(Days);
-            top_text.setText(DaysString + " Days");
-            top_text_two.setText(fromdate.getText().toString() + " - " + todate.getText().toString());
 
 
         }
@@ -485,5 +531,23 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
+    public String travellerNumber(int number,String travellerAge){
+        String plural = "";
+        String singular = "";
+        if(travellerAge.equals("adult")){
+            plural = "adults";
+            singular = "adult";
+        }else if(travellerAge.equals("child")){
+            plural = "children";
+            singular = "child";
+        }
+        if(number == 1){
+            return String.valueOf(number) + " " + singular;
+        }else{
+            return String.valueOf(number) + " " + plural;
+        }
+    }
+    public Long getPrice(int adultNumber){
+        return getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * adultNumber;
+    }
 }

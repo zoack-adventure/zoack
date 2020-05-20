@@ -4,10 +4,10 @@ import org.parceler.Parcel;
 
 @Parcel
 public class Destination {
-    private String name;
-    private String description;
-    private String imageUrl;
-    private String image;
+    public String name;
+    public String description;
+    public String imageUrl;
+    public String image;
 
 
     public Destination() {}

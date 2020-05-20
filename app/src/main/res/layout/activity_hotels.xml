@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".UI.MainActivity">
+    tools:context=".UI.HotelsActivity">
     <!--    tools:openDrawer="start"-->
 
 
@@ -19,10 +19,22 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/whiteC"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="4dp"/>
+            android:elevation="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hotels"
+                android:textColor="@color/blackText"
+                android:textSize="20sp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/robotoblack_powx"
+                android:layout_gravity="right"
+                android:id="@+id/toolbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
         <!--        <FrameLayout-->
         <!--            android:id="@+id/fragment_container"-->
         <!--            android:layout_width="match_parent"-->
@@ -30,7 +42,7 @@
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent" android:layout_height="match_parent"
-            android:background="@android:color/white">
+            android:background="@color/lightgrey">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -46,6 +58,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/nav_view"
+        app:itemIconTint="@color/zoack_orange"
         app:menu="@menu/drawer_menu">
 
         <LinearLayout

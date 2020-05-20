@@ -1,6 +1,7 @@
 package com.verisence.zoackadventures.UI;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -143,6 +144,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.blackText));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            toolbar.setTitleTextColor(getColor(R.color.black));
+//        }
+
         toggle.syncState();
 
         if (savedInstanceState == null) {
@@ -180,6 +186,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_profile:
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                break;
+            case R.id.nav_favorites:
+                startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
+                break;
+            case R.id.nav_payments:
+                startActivity(new Intent(MainActivity.this, PaymentActivityTest.class));
                 break;
             case R.id.nav_logout:
                 logout();
