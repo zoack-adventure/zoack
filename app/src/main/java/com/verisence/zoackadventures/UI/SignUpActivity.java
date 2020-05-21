@@ -33,11 +33,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public static final String TAG = SignUpActivity.class.getSimpleName();
     private FirebaseAuth.AuthStateListener authStateListener;
     private ProgressDialog mAuthProgressDialog;
-    private String mName;
+    private String phone;
     private FirebaseAuth auth;
 
-    @BindView(R.id.signName)
-    EditText editName;
+    @BindView(R.id.signPhone)
+    EditText editPhone;
     @BindView(R.id.signEmail) EditText editEmail;
     @BindView(R.id.signPass) EditText editPassW;
     @BindView(R.id.signPassC) EditText editConfirmPassW;
@@ -72,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private boolean isValidName(String name) {
         if (name.equals("")) {
-            editName.setError("Please enter your name");
+            editPhone.setError("Please enter your phone number");
             return false;
         }
         return true;
@@ -102,6 +102,50 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         createAuthProgressDialog();
 
         haveAccount.setOnClickListener(this);
+
+        editPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.setBackgroundResource(R.drawable.focus_border_style);
+                }else{
+                    view.setBackgroundResource(R.drawable.ricle_text);
+                }
+            }
+        });
+
+        editEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.setBackgroundResource(R.drawable.focus_border_style);
+                }else{
+                    view.setBackgroundResource(R.drawable.ricle_text);
+                }
+            }
+        });
+
+        editPassW.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.setBackgroundResource(R.drawable.focus_border_style);
+                }else{
+                    view.setBackgroundResource(R.drawable.ricle_text);
+                }
+            }
+        });
+
+        editConfirmPassW.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.setBackgroundResource(R.drawable.focus_border_style);
+                }else{
+                    view.setBackgroundResource(R.drawable.ricle_text);
+                }
+            }
+        });
     }
 
     private void createAuthProgressDialog() {
@@ -144,8 +188,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createNewUser() {
-        mName = editName.getText().toString().trim();
-        final String name = editName.getText().toString().trim();
+        phone = editPhone.getText().toString().trim();
+        final String name = editPhone.getText().toString().trim();
         final String email = editEmail.getText().toString().trim();
         String password = editPassW.getText().toString().trim();
         String confirmPassword = editConfirmPassW.getText().toString().trim();
@@ -164,7 +208,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         mAuthProgressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Authentication successful");
-                            createFirebaseUserProfile(task.getResult().getUser());
+//                            createFirebaseUserProfile(task.getResult().getUser());
 
                             FirebaseUser user = auth.getCurrentUser();
                             //get email and uid from user
@@ -176,7 +220,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             hashMap.put("email", email);
                             hashMap.put("uid", uid);
                             hashMap.put("name", "");
-                            hashMap.put("phone", "");
+                            hashMap.put("phone", phone);
                             hashMap.put("image", "");
                             hashMap.put("cover", "");
                             //firebase db instance
@@ -193,22 +237,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
     }
-    private void createFirebaseUserProfile(final FirebaseUser user) {
-
-        UserProfileChangeRequest addProfileName = new UserProfileChangeRequest.Builder()
-                .setDisplayName(mName)
-                .build();
-
-        user.updateProfile(addProfileName)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, user.getDisplayName());
-                        }
-                    }
-
-                });
-    }
+//    private void createFirebaseUserProfile(final FirebaseUser user) {
+//
+//        UserProfileChangeRequest addProfileName = new UserProfileChangeRequest.Builder()
+//                .setDisplayName(mName)
+//                .build();
+//
+//        user.updateProfile(addProfileName)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d(TAG, user.getDisplayName());
+//                        }
+//                    }
+//
+//                });
+//    }
 }

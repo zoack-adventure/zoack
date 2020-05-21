@@ -39,6 +39,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        editEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.setBackgroundResource(R.drawable.focus_border_style);
+                }else{
+                    view.setBackgroundResource(R.drawable.ricle_text);
+                }
+            }
+        });
+
+        editPassW.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.setBackgroundResource(R.drawable.focus_border_style);
+                }else{
+                    view.setBackgroundResource(R.drawable.ricle_text);
+                }
+            }
+        });
+
         noAccount.setOnClickListener(this);
         loginButton.setOnClickListener(this);
 

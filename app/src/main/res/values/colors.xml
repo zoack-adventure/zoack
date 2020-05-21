@@ -8,8 +8,10 @@
     <color name="purpleC">#0066FF</color>
     <color name="link">#0066FF</color>
     <color name="blackText">#000000</color>
+    <color name="grayText">#6A6E67</color>
     <color name="bg">#E2EAED</color>
     <color name="whiteC">#ffffff</color>
+    <color name="grayC">#D4D3D3</color>
     <color name="colorNull">#00000000</color>
     <color name="colorIcons">#7C7F81</color>
     <color name="colorPrimaryText">#1e1e1e</color>

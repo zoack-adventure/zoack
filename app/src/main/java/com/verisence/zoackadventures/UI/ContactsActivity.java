@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -49,8 +50,8 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
     DatabaseReference databaseReference;
     StorageReference storageReference;
 
-    LinearLayout web, email, phone;
-    TextView webText, emailText, phoneText;
+    RelativeLayout web, email, phone;
+//    TextView webText, emailText, phoneText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,13 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
         email = findViewById(R.id.contactEmail);
         phone = findViewById(R.id.contactPhone);
 
-        webText = findViewById(R.id.webText);
-        phoneText = findViewById(R.id.phoneText);
-        emailText = findViewById(R.id.emailText);
-
-        webText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_open_in_browser_black_24dp,0,0,0);
-        phoneText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
-        emailText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email_black_24dp,0,0,0);
+//        webText = findViewById(R.id.webText);
+//        phoneText = findViewById(R.id.phoneText);
+//        emailText = findViewById(R.id.emailText);
+//
+//        webText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_open_in_browser_black_24dp,0,0,0);
+//        phoneText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
+//        emailText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email_black_24dp,0,0,0);
 
 
         View view = navigationView.inflateHeaderView(R.layout.nav_header);
