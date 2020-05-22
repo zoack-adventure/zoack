@@ -1,7 +1,12 @@
 package com.verisence.zoackadventures.UI;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +38,8 @@ import butterknife.ButterKnife;
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = SignUpActivity.class.getSimpleName();
+    private static final String ZOACK_TERMS_PREFS = "";
+    private static final String TERMS_AND_CONDITIONS = "";
     private FirebaseAuth.AuthStateListener authStateListener;
     private ProgressDialog mAuthProgressDialog;
     private String phone;
@@ -45,6 +54,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Button signUpButton;
     @BindView(R.id.linkLog)
     TextView haveAccount;
+
+    private Bundle savedInstanceState;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences(ZOACK_TERMS_PREFS, Context.MODE_PRIVATE);
+
+        if (!sharedPreferences.getBoolean(TERMS_AND_CONDITIONS, false)){
+            TermsAndConditionsFragment tsandcs = new TermsAndConditionsFragment();
+            Dialog dialog = tsandcs.onCreateDialog(savedInstanceState);
+            dialog.show();
+        }
+
+    }
 
     @Override
     protected void onStart() {
@@ -91,6 +115,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
@@ -255,4 +280,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //
 //                });
 //    }
+    public class TermsAndConditionsFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+            builder.setMessage("Terms and Conditions. Agree?")
+                    .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SharedPreferences prefs = SignUpActivity.this.getSharedPreferences(ZOACK_TERMS_PREFS, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor edit = prefs.edit();
+                            edit.putBoolean(TERMS_AND_CONDITIONS, true);
+                            edit.commit();
+                        }
+                    });
+            return builder.create();
+        }
+    }
 }

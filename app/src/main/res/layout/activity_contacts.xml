@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".UI.ContactsActivity">
+    <!--    tools:openDrawer="start"-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relative"
+        android:background="@color/zoack_green"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UI.ContactsActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/zoack_green"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Us"
+                android:textColor="@color/whiteC"
+                android:textSize="20sp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/robotoblack_powx"
+                android:layout_gravity="right"
+                android:id="@+id/toolbar_title" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:elevation="24dp"
+            android:outlineAmbientShadowColor="@color/zoack_orange"
+            android:outlineSpotShadowColor="@color/zoack_orange"
+            android:src="@drawable/logo"
+            app:civ_border_color="@color/zoack_orange"
+            app:civ_border_width="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <LinearLayout
+            android:elevation="6dp"
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/profileImg"
+            android:layout_marginTop="300dp"
+            android:background="@drawable/contacts_bcg"
+            android:orientation="vertical"
+            android:padding="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="1.0">
+
+
+            <RelativeLayout
+                android:id="@+id/contactPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profileImg"
+                android:layout_toRightOf="@+id/nameIcon">
+                <TextView
+                    android:id="@+id/phoneText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/robotoblack_powx"
+                    android:textColor="@color/blackText"
+                    android:text="Phone"
+                    />
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/phoneText"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/blackText"
+                    android:fontFamily="@font/robotothin"
+                    android:textSize="20sp"
+                    android:text="+254746079970" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phoneIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameGroup"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="45dp">
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contactEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameGroup"
+                android:layout_toEndOf="@+id/emailIcon"
+                android:layout_toRightOf="@+id/emailIcon">
+
+
+                <TextView
+                    android:id="@+id/emailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Email"
+                    android:fontFamily="@font/robotoblack_powx"
+                    android:textColor="@color/blackText"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/emailText"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/blackText"
+                    android:fontFamily="@font/robotothin"
+                    android:textSize="20sp"
+                    android:text="info@zoackadventures.co.ke" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/emailIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailGroup"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="45dp">
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contactWeb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailGroup"
+                android:layout_toEndOf="@id/phoneIcon"
+                android:layout_toRightOf="@id/phoneIcon">
+
+                <TextView
+                    android:id="@+id/webText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Website"
+                    android:textColor="@color/blackText"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/webText"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/blackText"
+                    android:fontFamily="@font/robotothin"
+                    android:textSize="20sp"
+                    android:text="www.zoackadventures.co.ke" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/nav_view"
+        app:menu="@menu/drawer_menu">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="40dp">
+
+            <TextView
+                android:id="@+id/contactUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="   Contact Us"
+                android:textColor="@color/blackText"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>
