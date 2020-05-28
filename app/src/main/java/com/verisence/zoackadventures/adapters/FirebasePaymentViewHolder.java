@@ -21,10 +21,7 @@ import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.UI.HotelDetailActivity;
-import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.models.Payment;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 

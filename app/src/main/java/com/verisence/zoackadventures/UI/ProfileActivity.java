@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,7 +15,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +28,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -52,7 +55,6 @@ import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,6 +91,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 //    private Uri filePath;
 
 //    String profileOrCover="image";
+    String personName;
+    String personEmail;
+    Uri personPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,12 +127,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         cameraPermissions = new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+
         profileImg = findViewById(R.id.profileImg);
         nameTv = findViewById(R.id.name);
         emailTv = findViewById(R.id.email);
         phoneTv = findViewById(R.id.phone);
         fab = this.findViewById(R.id.fab);
         pd = new ProgressDialog(ProfileActivity.this);
+
 
         //search all nodes for users whose key named email is equal to the signed in email
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());

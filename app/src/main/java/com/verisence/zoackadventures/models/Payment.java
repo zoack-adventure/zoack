@@ -2,8 +2,6 @@ package com.verisence.zoackadventures.models;
 
 import org.parceler.Parcel;
 
-import java.util.Date;
-
 @Parcel
 public class Payment {
     public Hotel hotel;

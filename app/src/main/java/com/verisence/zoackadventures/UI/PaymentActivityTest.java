@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,11 +34,8 @@ import com.littlemango.stacklayoutmanager.StackLayoutManager;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
-import com.verisence.zoackadventures.adapters.FirebaseHotelViewHolder;
 import com.verisence.zoackadventures.adapters.FirebasePaymentViewHolder;
-import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.models.Payment;
-import com.verisence.zoackadventures.zoack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

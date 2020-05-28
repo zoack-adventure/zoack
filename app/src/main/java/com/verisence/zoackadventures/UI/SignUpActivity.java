@@ -1,24 +1,24 @@
 package com.verisence.zoackadventures.UI;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +28,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.HashMap;
 
@@ -54,6 +53,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Button signUpButton;
     @BindView(R.id.linkLog)
     TextView haveAccount;
+    Dialog termsDialog;
+    Button acceptTerms;
+    CheckBox checkBoxAgree;
+    Switch switchAgree;
+
 
     private Bundle savedInstanceState;
 
@@ -63,10 +67,51 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         SharedPreferences sharedPreferences = getSharedPreferences(ZOACK_TERMS_PREFS, Context.MODE_PRIVATE);
 
         if (!sharedPreferences.getBoolean(TERMS_AND_CONDITIONS, false)){
-            TermsAndConditionsFragment tsandcs = new TermsAndConditionsFragment();
-            Dialog dialog = tsandcs.onCreateDialog(savedInstanceState);
-            dialog.show();
+            ShowTermsPopup();
         }
+
+    }
+
+    private void ShowTermsPopup() {
+        termsDialog.setContentView(R.layout.terms_popup);
+        acceptTerms = termsDialog.findViewById(R.id.btnAccept);
+        acceptTerms.setEnabled(false);
+        acceptTerms.setBackground(this.getResources().getDrawable(R.drawable.round_btn_gray));
+
+//        checkBoxAgree = termsDialog.findViewById(R.id.checkboxAgree);
+        switchAgree = termsDialog.findViewById(R.id.switchAgree);
+
+//        checkBoxAgree.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (checkBoxAgree.isChecked()){
+//                    acceptTerms.setEnabled(true);
+//                    acceptTerms.setBackground(SignUpActivity.this.getResources().getDrawable(R.drawable.round_btn));
+//                }else {
+//                    acceptTerms.setEnabled(false);
+//                    acceptTerms.setBackground(SignUpActivity.this.getResources().getDrawable(R.drawable.round_btn_gray));
+//                }
+//            }
+//        });
+
+        switchAgree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switchAgree.isChecked()){
+                    acceptTerms.setEnabled(true);
+                    acceptTerms.setBackground(SignUpActivity.this.getResources().getDrawable(R.drawable.round_btn));
+                }else {
+                    acceptTerms.setEnabled(false);
+                    acceptTerms.setBackground(SignUpActivity.this.getResources().getDrawable(R.drawable.round_btn_gray));
+                }
+            }
+        });
+
+        acceptTerms.setOnClickListener(this);
+
+        termsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        termsDialog.show();
+
 
     }
 
@@ -119,6 +164,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
+
+        termsDialog = new Dialog(this);
+        termsDialog.setCancelable(false);
 
         auth = FirebaseAuth.getInstance();
         createAuthStateListener();
@@ -209,6 +257,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == signUpButton){
             createNewUser();
+            SharedPreferences sharedPreferences = getSharedPreferences(ZOACK_TERMS_PREFS, Context.MODE_PRIVATE);
+        }
+        if (v == acceptTerms){
+            SharedPreferences preferences = SignUpActivity.this.getSharedPreferences(ZOACK_TERMS_PREFS, Context.MODE_PRIVATE);
+            SharedPreferences.Editor edit = preferences.edit();
+            edit.putBoolean(TERMS_AND_CONDITIONS, true);
+            edit.apply();
+
+            termsDialog.dismiss();
         }
     }
 
@@ -280,22 +337,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //
 //                });
 //    }
-    public class TermsAndConditionsFragment extends DialogFragment {
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
-            builder.setMessage("Terms and Conditions. Agree?")
-                    .setPositiveButton("I agree", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            SharedPreferences prefs = SignUpActivity.this.getSharedPreferences(ZOACK_TERMS_PREFS, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor edit = prefs.edit();
-                            edit.putBoolean(TERMS_AND_CONDITIONS, true);
-                            edit.commit();
-                        }
-                    });
-            return builder.create();
-        }
-    }
+
 }

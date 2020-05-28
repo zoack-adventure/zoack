@@ -56,16 +56,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <LinearLayout
-            android:elevation="6dp"
-            android:id="@+id/linearLayout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@+id/profileImg"
-            android:layout_marginTop="200dp"
-            android:background="@drawable/welcome_bcg"
-            android:orientation="vertical"
-            android:padding="32dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -73,119 +66,138 @@
             app:layout_constraintTop_toTopOf="@+id/toolbar"
             app:layout_constraintVertical_bias="1.0">
 
-            <TextView
-                android:id="@+id/pageTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="35dp"
-                android:text="Sign In"
-                android:textSize="30sp"
-                android:textColor="@color/zoack_green"
-                android:fontFamily="@font/robotoblack_powx"/>
-
-            <RelativeLayout
-                android:id="@+id/emailGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/pageTitle"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="18dp">
-
-                <TextView
-                    android:id="@+id/nameTag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Email Address"
-                    android:textColor="@color/grayText"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/logEmail"
-                    android:layout_width="309dp"
-                    android:layout_height="56dp"
-                    android:layout_below="@id/nameTag"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="9dp"
-                    android:background="@drawable/ricle_text"
-                    android:ems="10"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textColor="@color/black"
-                    android:gravity="center|left"
-                    android:paddingStart="10dp"
-                    android:inputType="textEmailAddress"
-                    android:paddingLeft="10dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/passGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/pageTitle"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="18dp">
-
-                <TextView
-                    android:id="@+id/passTag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Password"
-                    android:textColor="@color/grayText"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/logPass"
-                    android:layout_width="309dp"
-                    android:layout_height="56dp"
-                    android:layout_below="@id/passTag"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="9dp"
-                    android:background="@drawable/ricle_text"
-                    android:ems="10"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textColor="@color/black"
-                    android:gravity="center|left"
-                    android:inputType="textPassword"
-                    android:paddingLeft="10dp"/>
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/loginButton"
-                android:layout_width="309dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="60dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ricle_button"
-                android:text="Sign In"
-                android:textColor="@color/whiteC"
-                android:textAllCaps="false"
-                android:textSize="20sp" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="27dp"
-                android:layout_gravity="center_horizontal">
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New User?" />
+                android:elevation="6dp"
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@+id/profileImg"
+                android:layout_marginTop="200dp"
+                android:background="@drawable/welcome_bcg"
+                android:orientation="vertical"
+                android:padding="32dp">
 
                 <TextView
-                    android:id="@+id/linkSign"
+                    android:id="@+id/pageTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:text=" Register Here"
-                    android:textColor="@color/link" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="35dp"
+                    android:text="Sign In"
+                    android:textSize="30sp"
+                    android:textColor="@color/zoack_green"
+                    android:fontFamily="@font/robotoblack_powx"/>
+
+                <RelativeLayout
+                    android:id="@+id/emailGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pageTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="18dp">
+
+                    <TextView
+                        android:id="@+id/nameTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:text="Email Address"
+                        android:textColor="@color/grayText"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/logEmail"
+                        android:layout_width="309dp"
+                        android:layout_height="56dp"
+                        android:layout_below="@id/nameTag"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="9dp"
+                        android:background="@drawable/ricle_text"
+                        android:ems="10"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/black"
+                        android:gravity="center|left"
+                        android:paddingStart="10dp"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/passGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pageTitle"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="18dp">
+
+                    <TextView
+                        android:id="@+id/passTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light"
+                        android:text="Password"
+                        android:textColor="@color/grayText"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/logPass"
+                        android:layout_width="309dp"
+                        android:layout_height="56dp"
+                        android:layout_below="@id/passTag"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="9dp"
+                        android:background="@drawable/ricle_text"
+                        android:ems="10"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/black"
+                        android:gravity="center|left"
+                        android:inputType="textPassword"
+                        android:paddingLeft="10dp"/>
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="309dp"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/ricle_button"
+                    android:text="Sign In"
+                    android:textColor="@color/whiteC"
+                    android:textAllCaps="false"
+                    android:textSize="20sp" />
+
+<!--                <com.google.android.gms.common.SignInButton-->
+<!--                    android:id="@+id/sign_in_button"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_gravity="center_horizontal"/>-->
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="27dp"
+                    android:layout_gravity="center_horizontal">
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New User?" />
+
+                    <TextView
+                        android:id="@+id/linkSign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text=" Register Here"
+                        android:textColor="@color/link" />
+                </LinearLayout>
+
+
             </LinearLayout>
-
-
-        </LinearLayout>
+        </ScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
