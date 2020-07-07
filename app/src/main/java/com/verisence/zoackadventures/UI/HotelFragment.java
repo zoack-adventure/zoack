@@ -42,6 +42,7 @@ import com.verisence.zoackadventures.Mpesa.utils;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.models.Payment;
+import com.verisence.zoackadventures.models.Transaction;
 import com.verisence.zoackadventures.utils.Helpers;
 
 import org.parceler.Parcels;
@@ -49,6 +50,7 @@ import org.parceler.Parcels;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -106,7 +108,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     public static TextView travelers_count;
     public static TextView totalPrice;
     public static final String DATE_FORMAT = "d - M - yyyy";
-    public static Button payBtn;
+    public static TextView payBtn;
     private ApiClient mApiClient;
     private ProgressDialog mProgressDialog;
     FirebaseAuth firebaseAuth;
@@ -230,7 +232,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             child_count = (TextView) dialog.findViewById(R.id.child_count);
 //            travelers_count = (TextView) dialog.findViewById(R.id.traveler_count);
             totalPrice = (TextView) dialog.findViewById(R.id.total_price);
-            payBtn = (Button) dialog.findViewById(R.id.payBtn);
+            payBtn = (TextView) dialog.findViewById(R.id.payBtn);
             final long[] price = {0};
             final int[] childNumber = {0};
             final int[] adultNumber = {0};
@@ -329,7 +331,30 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onClick(View view) {
                     //need to get the proper phone number
-                    performSTKPush(phoneNumber,String.valueOf(10));
+//                    performSTKPush(phoneNumber,String.valueOf(10));
+                        Payment payment = new Payment();
+                        ArrayList<Transaction> transactions = new ArrayList<>();
+                        payment.setAdults((adult_count.getText().toString()));
+                        payment.setChildren((child_count.getText().toString()));
+                        payment.setArrivalDate(fromdate.getText().toString());
+                        payment.setDepartureDate(todate.getText().toString());
+                        payment.setTransactionDate(new Date().toString());
+                        payment.setHotel(mHotel);
+                        payment.setTransactions(transactions);
+                        payment.setAmount(totalPrice.getText().toString());
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        DatabaseReference savedPaymentRef = FirebaseDatabase
+                                .getInstance()
+                                .getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid);
+
+                        DatabaseReference pushRef = savedPaymentRef.push();
+                        String pushId = pushRef.getKey();
+                        payment.setPushID(pushId);
+                        pushRef.setValue(payment);
+                        Intent intent = new Intent(getContext(),PaymentActivityTest.class);
+                        startActivity(intent);
                 }
             });
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.roundbcg);
@@ -357,81 +382,63 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         }
     }
-    public void performSTKPush(String phone_number, String amount) {
-        mProgressDialog.setMessage("Sending Mpesa payment request of "+amount+" to " + phone_number);
-        mProgressDialog.setCancelable(true);
-        mProgressDialog.setTitle("Please Wait...");
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        mProgressDialog.show();
-        String timestamp = utils.getTimestamp();
-        STKPush stkPush = new STKPush(
-                BUSINESS_SHORT_CODE,
-                utils.getPassword(BUSINESS_SHORT_CODE, PASSKEY, timestamp),
-                timestamp,
-                TRANSACTION_TYPE,
-                String.valueOf(amount),
-                utils.sanitizePhoneNumber(phone_number),
-                PARTYB,
-                utils.sanitizePhoneNumber(phone_number),
-                CALLBACKURL,
-                "test", //The account reference
-                "test"  //The transaction description
-        );
+//    public void performSTKPush(String phone_number, String amount) {
+//        mProgressDialog.setMessage("Sending Mpesa payment request of "+amount+" to " + phone_number);
+//        mProgressDialog.setCancelable(true);
+//        mProgressDialog.setTitle("Please Wait...");
+//        mProgressDialog.setIndeterminate(true);
+//        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        mProgressDialog.show();
+//        String timestamp = utils.getTimestamp();
+//        STKPush stkPush = new STKPush(
+//                BUSINESS_SHORT_CODE,
+//                utils.getPassword(BUSINESS_SHORT_CODE, PASSKEY, timestamp),
+//                timestamp,
+//                TRANSACTION_TYPE,
+//                String.valueOf(amount),
+//                utils.sanitizePhoneNumber(phone_number),
+//                PARTYB,
+//                utils.sanitizePhoneNumber(phone_number),
+//                CALLBACKURL,
+//                "test", //The account reference
+//                "test"  //The transaction description
+//        );
+//
+//        mApiClient.setGetAccessToken(false);
+//
+//
+//        mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
+//            @Override
+//            public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
+//                mProgressDialog.dismiss();
+//                try {
+//                    if (response.isSuccessful()) {
+//                        Toast.makeText(getContext(),"Payment request sent successfully",Toast.LENGTH_LONG).show();
+//                        System.out.println(">>>>>>>>>>>>>>>>>>>>"+response);
+//                        Timber.d("post submitted to API. %s", response.body());
+//
 
-        mApiClient.setGetAccessToken(false);
-
-
-        mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
-            @Override
-            public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
-                mProgressDialog.dismiss();
-                try {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(getContext(),"Payment request sent successfully",Toast.LENGTH_LONG).show();
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>"+response);
-                        Timber.d("post submitted to API. %s", response.body());
-
-                        Payment payment = new Payment();
-                        payment.setAdults((adult_count.getText().toString()));
-                        payment.setChildren((child_count.getText().toString()));
-                        payment.setArrivalDate(fromdate.getText().toString());
-                        payment.setDepartureDate(todate.getText().toString());
-                        payment.setTransactionDate(new Date().toString());
-                        payment.setHotel(mHotel);
-                        payment.setAmount(totalPrice.getText().toString());
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        String uid = user.getUid();
-                        DatabaseReference savedPaymentRef = FirebaseDatabase
-                                .getInstance()
-                                .getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid);
-
-                        DatabaseReference pushRef = savedPaymentRef.push();
-                        String pushId = pushRef.getKey();
-                        payment.setPushID(pushId);
-                        pushRef.setValue(payment);
-                    } else {
-                        Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
-                        Timber.e("Response %s", response.errorBody().string());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<STKPush> call, @NonNull Throwable t) {
-                mProgressDialog.dismiss();
-                Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
-                Timber.e(t);
-            }
-        });
-    }
+//                    } else {
+//                        Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
+//                        Timber.e("Response %s", response.errorBody().string());
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            @Override
+//            public void onFailure(@NonNull Call<STKPush> call, @NonNull Throwable t) {
+//                mProgressDialog.dismiss();
+//                Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
+//                Timber.e(t);
+//            }
+//        });
+//    }
     public static long getDaysBetweenDates(String start, String end) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         Date startDate, endDate;
@@ -476,9 +483,10 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
-        public void onDateSet(DatePicker view, int year, int month, int day) {
+        public void onDateSet(DatePicker view, int year, int month , int day) {
             fromdate.setTextColor(getResources().getColor(R.color.black));
-            fromdate.setText(day + " - " + month  + " - " + year);
+            int finalMonth = month+1;
+            fromdate.setText(day + " - " + finalMonth +" - " + year);
         }
 
     }
@@ -493,10 +501,10 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             String getfrom[] = getfromdate.split(" - ");
             int year, month, day;
             year = Integer.parseInt(getfrom[2]);
-            month = Integer.parseInt(getfrom[1]);
+            month = Integer.parseInt(getfrom[1]) - 1;
             day = Integer.parseInt(getfrom[0]);
             final Calendar c = Calendar.getInstance();
-            c.set(year, month, day + 1);
+            c.set(year, month , day + 1);
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
             datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
             return datePickerDialog;
@@ -504,8 +512,8 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
-
-            todate.setText(day + " - " + month + " - " + year);
+            int finalMonth = month+1;
+            todate.setText(day + " - " + finalMonth + " - " + year);
             todate.setTextColor(getResources().getColor(R.color.black));
 
 

@@ -21,7 +21,11 @@ import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.UI.HotelDetailActivity;
+import com.verisence.zoackadventures.UI.PaymentDetailActivity;
+import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.models.Payment;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,7 @@ public class FirebasePaymentViewHolder extends RecyclerView.ViewHolder implement
 
     View mView;
     Context mContext;
+    TextView viewDetails;
 
 
     public FirebasePaymentViewHolder(@NonNull View itemView) {
@@ -41,9 +46,15 @@ public class FirebasePaymentViewHolder extends RecyclerView.ViewHolder implement
         ImageView hotelImageView = mView.findViewById(R.id.hotelImageView);
         ImageView hotelImage = mView.findViewById(R.id.imageHotel);
         TextView nameTextView = (TextView) mView.findViewById(R.id.hotelNameTextView);
+        TextView numberOfPayments = mView.findViewById(R.id.numberOfPayments);
+        viewDetails = mView.findViewById(R.id.viewDetails);
+        if(payment.getTransactions() == null || payment.getTransactions().size() < 1){
+            numberOfPayments.setText("0");
+        }else{
+            numberOfPayments.setText(String.valueOf(payment.getTransactions().size()));
+        }
 
-
-
+        viewDetails.setOnClickListener(this);
 
         Picasso.get().load(payment.getHotel().getImageUrl()).into(hotelImageView);
         Picasso.get().load(payment.getHotel().getImageUrl()).into(hotelImage);
@@ -57,32 +68,35 @@ public class FirebasePaymentViewHolder extends RecyclerView.ViewHolder implement
 
     @Override
     public void onClick(View v) {
-        final ArrayList<Payment> payments = new ArrayList<>();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-        final DatabaseReference reference = database.getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid);
+        if(v.equals(viewDetails)){
+            final ArrayList<Payment> payments = new ArrayList<>();
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+            final DatabaseReference reference = database.getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid);
 //        final String location = "Diani";
 
-        final Query paymentQuery = reference;
-        paymentQuery.keepSynced(true);
-        paymentQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    payments.add(snapshot.getValue(Payment.class));
+            final Query paymentQuery = reference;
+            paymentQuery.keepSynced(true);
+            paymentQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        payments.add(snapshot.getValue(Payment.class));
+                    }
+                    int itemPosition = getLayoutPosition();
+                    Intent intent = new Intent(mContext, PaymentDetailActivity.class);
+                    intent.putExtra("position", itemPosition);
+                    intent.putExtra("payment", Parcels.wrap(payments));
+                    mContext.startActivity(intent);
                 }
-                int itemPosition = getLayoutPosition();
-                Intent intent = new Intent(mContext, HotelDetailActivity.class);
-                intent.putExtra("position", itemPosition);
-//                intent.putExtra("hotels", Parcels.wrap(hotels));
-                mContext.startActivity(intent);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 }

@@ -2,9 +2,13 @@ package com.verisence.zoackadventures.models;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 @Parcel
 public class Payment {
     public Hotel hotel;
+    public ArrayList<Transaction> transactions;
     public String arrivalDate;
     public String departureDate;
     public String adults;
@@ -16,7 +20,7 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Hotel hotel, String arrivalDate, String departureDate, String adults, String children, String transactionDate, String pushID, String amount) {
+    public Payment(Hotel hotel, String arrivalDate, String departureDate, String adults, String children, String transactionDate, String pushID, String amount, ArrayList<Transaction> transactions) {
         this.hotel = hotel;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
@@ -25,6 +29,15 @@ public class Payment {
         this.transactionDate = transactionDate;
         this.pushID = pushID;
         this.amount = amount;
+        this.transactions = transactions;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public Hotel getHotel() {

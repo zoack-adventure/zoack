@@ -18,4 +18,8 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="Ksh">Ksh. </string>
+    <string name="total">Total</string>
+    <string name="proceed_payments">proceed to payments</string>
+    <string name="oops">Oops</string>
+    <string name="no_payments">Looks you haven\'t started making any payments</string>
 </resources>

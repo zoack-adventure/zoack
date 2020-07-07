@@ -9,4 +9,9 @@ public class Helpers {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
+    public static String removeCommas(String number){
+        return number.replaceAll(",","");
+    }
+
+
 }
