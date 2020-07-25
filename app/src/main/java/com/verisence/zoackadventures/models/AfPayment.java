@@ -1,5 +1,7 @@
 package com.verisence.zoackadventures.models;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 public class AfPayment {
@@ -8,9 +10,18 @@ public class AfPayment {
     private String phoneNumber;
     private String currencyCode;
     private String providerChannel;
+    private Map<String,String> metadata;
     private int amount;
 
     public AfPayment() {
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
     }
 
     public String getUsername() {

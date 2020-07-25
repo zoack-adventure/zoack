@@ -75,8 +75,13 @@
             android:fontFamily="@font/lato_medium"
             android:maxLines="10"
             android:text="Add Payment"
-            android:textColor="@color/zoack_green_dark"
+            android:textColor="@color/whiteC"
             android:textSize="14sp"
+            android:paddingBottom="7dp"
+            android:paddingTop="5dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/payments_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -14,9 +14,12 @@ import retrofit2.Retrofit;
 import com.google.gson.Gson;
 import com.verisence.zoackadventures.models.AfPayment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PaymentService {
 
-    public static void pay(Callback callback, int amount, String phoneNumber){
+    public static void pay(Callback callback, int amount, String phoneNumber,String uid, String paymentID,String transactionID){
         Gson gson = new Gson();
         AfPayment afPayment = new AfPayment();
         afPayment.setUsername("sandbox");
@@ -25,6 +28,12 @@ public class PaymentService {
         afPayment.setPhoneNumber(phoneNumber);
         afPayment.setProviderChannel("237558");
         afPayment.setProductName("Zoack");
+        Map<String,String> meta = new HashMap<>();
+        meta.put("PhoneNumber",phoneNumber);
+        meta.put("UID",uid);
+        meta.put("PaymentID",paymentID);
+        meta.put("TransactionID",transactionID);
+        afPayment.setMetadata(meta);
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         HttpUrl.Builder builder = HttpUrl.parse(Constants.AFRICAS_TALKING_URL).newBuilder();

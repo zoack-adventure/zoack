@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,8 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.BuildConfig;
 import com.verisence.zoackadventures.Constants;
@@ -124,7 +128,6 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
         amountRemaining.setText(mPayment.getAmount());
         String startdate = mPayment.getArrivalDate();
         days.setText(String.valueOf(getDaysBetweenDates(startdate)));
-//        AfricasTalking.initialize("sandbox", BuildConfig.AFRICA_TALKING_API_KEY);
 
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
@@ -135,9 +138,14 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
             transactions.setVisibility(View.VISIBLE);
 
             ArrayList<Transaction> transactionsList = mPayment.getTransactions();
-            int remainingAmount = Integer.parseInt(Helpers.removeCommas(mPayment.getAmount().split(" ")[1]));
+            float remainingAmount = Float.parseFloat(Helpers.removeCommas(mPayment.getAmount().split(" ")[1]));
             for (Transaction t: transactionsList) {
-               remainingAmount  = remainingAmount - t.getAmount();
+                if(t.getValue().equals("0")){
+                    remainingAmount  = remainingAmount - Float.parseFloat(t.getValue());
+                }else{
+                    remainingAmount  = remainingAmount - Float.parseFloat(t.getValue().split(" ")[1]);
+                }
+
             }
             amountRemaining.setText(String.valueOf(remainingAmount));
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -192,26 +200,23 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
                         if(transactions == null){
                             transactions = new ArrayList<>();
                         }
-//                        PaymentService payment = AfricasTalking.getService(AfricasTalking.SERVICE_PAYMENT);
-//                        /* Set the name of your Africa's Talking payment product */
-//                        String productName = "SampleProduct";
-//
-//                        /* Set the phone number you want to send to in international format */
-//                        String phoneNumber = "+254798549950";
-//
-//                        /* Set The 3-Letter ISO currency code and the checkout amount */
-//                        String currencyCode = "KES";
-//                        float amount = 100;
-//                        HashMap<String, String> metadata = new HashMap<String, String>();
-//                        metadata.put("someKey", "someValue");
-//                        try {
-//                            CheckoutResponse response = payment.mobileCheckout(
-//                                    productName, phoneNumber, currencyCode, metadata);
-//                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+response.toString());
-//
-//                        } catch(Exception ex) {
-//                            ex.printStackTrace();
-//                        }
+
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        Transaction transaction = new Transaction();
+                        transaction.setValue("0");
+                        transaction.setStatus("pending");
+                        transaction.setDate(new Date());
+
+                        DatabaseReference savedPaymentRef = FirebaseDatabase
+                                .getInstance()
+                                .getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid).child(mPayment.getPushID());
+                        transactions.add(transaction);
+                        mPayment.setTransactions(transactions);
+                        mPayment.setTransactionDate(new Date().toString());
+                        savedPaymentRef.setValue(mPayment);
+
                         PaymentService.pay(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -222,20 +227,37 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
                             public void onResponse(Call call, Response response) throws IOException {
                                 System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Response "+response);
                             }
-                        },100,"+254798549950");
+                        },100,number.getEditText().getText().toString(),uid,mPayment.getPushID(),String.valueOf(transactions.size()-1));
 
-                        Transaction transaction = new Transaction();
-                        transaction.setAmount(Integer.parseInt(cash.getEditText().getText().toString()));
-                        transaction.setDate(new Date());
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        String uid = user.getUid();
-                        DatabaseReference savedPaymentRef = FirebaseDatabase
-                                .getInstance()
-                                .getReference(Constants.FIREBASE_CHILD_TRANSACTIONS).child(uid).child(mPayment.getPushID());
-                        transactions.add(transaction);
-                        mPayment.setTransactions(transactions);
-                        mPayment.setTransactionDate(new Date().toString());
-                        savedPaymentRef.setValue(mPayment);
+                        DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference()
+                                .child(Constants.FIREBASE_CHILD_TRANSACTIONS)
+                                .child(uid)
+                                .child(mPayment.getPushID())
+                                .child(Constants.FIREBASE_CHILD_TRANSACTIONS);
+
+                        ArrayList<Transaction> finalTransactions = transactions;
+                        databaseref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                    if(ds.getKey().equals(String.valueOf(dataSnapshot.getChildrenCount()-1))){
+                                        Transaction transactionToUpdate = ds.getValue(Transaction.class);
+                                        if(transactionToUpdate.getStatus().equalsIgnoreCase("pending")){
+                                            Toast.makeText(getActivity(), "pending", Toast.LENGTH_SHORT).show();
+                                        }else if(transactionToUpdate.getStatus().equalsIgnoreCase("success")) {
+                                            Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
+                                        }else if(transactionToUpdate.getStatus().equalsIgnoreCase("failed")){
+                                            Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
 
                     }
                 }

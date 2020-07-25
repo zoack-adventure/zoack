@@ -67,7 +67,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         TextView amount  = holder.amountValue;
         TextView date = holder.date;
         date.setText(stringDate);
-        amount.setText(String.valueOf(mTransactions.get(position).getAmount()));
+        amount.setText(String.valueOf(mTransactions.get(position).getValue()));
 //        Toast.makeText(context, String.valueOf(mTransactions.get(position)), Toast.LENGTH_SHORT).show();
 
     }
