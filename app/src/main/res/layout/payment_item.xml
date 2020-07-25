@@ -104,20 +104,20 @@
                 android:text="2" />
 
             <TextView
+                android:id="@+id/viewDetails"
                 android:padding="15dp"
-                android:layout_centerInParent="true"
-                android:layout_margin="16dp"
-                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/numberOfPayments"
-                android:background="@drawable/gradient"
-                android:paddingLeft="5dp"
+                android:background="@color/zoack_orange"
                 android:textAllCaps="true"
                 android:textSize="15sp"
                 android:textColor="@color/whiteC"
                 android:fontFamily="@font/lato_medium"
                 android:text="view details"
-                android:drawablePadding="5dp"
                 />
 
 

@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -53,6 +55,8 @@ public class PaymentActivityTest extends AppCompatActivity implements Navigation
     RecyclerView mRecyclerView;
     @BindView(R.id.contactDrawer)
     TextView contactDrawer;
+    @BindView(R.id.errorRelativeLayout)
+    RelativeLayout errorRelativeLayout;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -83,6 +87,7 @@ public class PaymentActivityTest extends AppCompatActivity implements Navigation
         ImageView navImage = view.findViewById(R.id.nav_header_photo);
 
         setUpFireBaseAdapter();
+        setUpUI();
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -150,7 +155,29 @@ public class PaymentActivityTest extends AppCompatActivity implements Navigation
         }
     }
 
+    private void setUpUI() {
+        paymentsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getChildrenCount() > 0){
+                    errorRelativeLayout.setVisibility(View.INVISIBLE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }else {
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    errorRelativeLayout.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void setUpFireBaseAdapter() {
+
+
         Query query = paymentsReference;
         FirebaseRecyclerOptions<Payment> options = new FirebaseRecyclerOptions.Builder<Payment>()
                 .setQuery(query, Payment.class)

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/robotoblack_powx"
-            android:text="Enter Your Details"
+            android:text="Your Details"
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -35,14 +35,13 @@
         android:layout_marginTop="20dp"
         >
 
-        <Button
-            android:id="@+id/start_date_btn"
+        <TextView
+            android:id="@+id/start_date"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/outline_button"
             android:padding="15dp"
             android:text="Start Date"
-            android:textColor="@color/turquoise"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -65,18 +64,16 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
 
-        <Button
-            android:id="@+id/end_date_btn"
+        <TextView
+            android:id="@+id/end_date"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/outline_button"
             android:padding="15dp"
-            android:text="End  Date"
-            android:textColor="@color/turquoise"
+            android:text="End Date"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/toDate"
             android:layout_width="wrap_content"
@@ -120,8 +117,6 @@
                 android:id="@+id/adult_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/adult_add_btn"
-                android:layout_toLeftOf="@+id/adult_add_btn"
                 android:fontFamily="@font/robotoblack_powx"
                 android:text="0 adults"
                 android:textColor="@color/black"
@@ -130,94 +125,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/adult_add_btn"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_toStartOf="@+id/adult_minus_btn"
-                android:layout_toLeftOf="@+id/adult_minus_btn"
-                android:background="@drawable/ic_add_circle_black_24dp"
-                android:textColor="@color/turquoise"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/adult_minus_btn"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/adult_minus_btn"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ic_remove_circle_black_24dp"
-                android:textColor="@color/whiteC"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_four"
-        android:layout_gravity="center"
-        android:layout_width="300dp"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-
             <TextView
                 android:id="@+id/child_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/child_add_btn"
-                android:layout_toLeftOf="@+id/child_add_btn"
                 android:fontFamily="@font/robotoblack_powx"
                 android:text="0 children"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/child_add_btn"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_toStartOf="@+id/child_minus_btn"
-                android:layout_toLeftOf="@+id/child_minus_btn"
-                android:background="@drawable/ic_add_circle_black_24dp"
-                android:textColor="@color/turquoise"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/child_minus_btn"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/child_minus_btn"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ic_remove_circle_black_24dp"
-                android:textColor="@color/whiteC"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_gravity="center"
         android:id="@+id/linear_five"
@@ -277,13 +201,13 @@
 
 
             <TextView
-                android:id="@+id/payBtn"
+                android:id="@+id/closeBtn"
                 android:background="@drawable/pay_dialog_bcg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="@string/proceed_payments"
+                android:text="@string/close"
                 android:textColor="@color/whiteC"
                 android:textSize="14sp"
                 android:textStyle="bold"
