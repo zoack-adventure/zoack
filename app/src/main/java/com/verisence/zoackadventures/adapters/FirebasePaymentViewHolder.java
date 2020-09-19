@@ -24,6 +24,7 @@ import com.verisence.zoackadventures.UI.HotelDetailActivity;
 import com.verisence.zoackadventures.UI.PaymentDetailActivity;
 import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.models.Payment;
+import com.verisence.zoackadventures.models.Transaction;
 
 import org.parceler.Parcels;
 
@@ -51,7 +52,13 @@ public class FirebasePaymentViewHolder extends RecyclerView.ViewHolder implement
         if(payment.getTransactions() == null || payment.getTransactions().size() < 1){
             numberOfPayments.setText("0");
         }else{
-            numberOfPayments.setText(String.valueOf(payment.getTransactions().size()));
+            int validTransactionCount = 0;
+            for(Transaction t: payment.getTransactions()){
+                if(t.getStatus().equalsIgnoreCase("success")){
+                    validTransactionCount++;
+                }
+            }
+            numberOfPayments.setText(String.valueOf(validTransactionCount));
         }
 
         viewDetails.setOnClickListener(this);

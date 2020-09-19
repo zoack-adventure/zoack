@@ -21,5 +21,9 @@
     <string name="total">Total</string>
     <string name="proceed_payments">proceed to payments</string>
     <string name="oops">Oops</string>
+    <string name="success">Success</string>
     <string name="no_payments">Looks you haven\'t started making any payments</string>
+    <string name="no_internet">Seems like you have lost internet connection</string>
+    <string name="not_processed">Unfortunately your transaction failed.\n Please try again later.</string>
+    <string name="pay">PAY</string>
 </resources>
