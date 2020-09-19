@@ -58,4 +58,8 @@
     <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/turquoise</item>
     </style>
+
+    <style name="progressBar" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/zoack_green_dark</item>
+    </style>
 </resources>

@@ -1,27 +1,21 @@
 package com.verisence.zoackadventures.UI;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,16 +26,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.verisence.zoackadventures.BuildConfig;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.adapters.TransactionsAdapter;
-import com.verisence.zoackadventures.models.Destination;
 import com.verisence.zoackadventures.models.Payment;
 import com.verisence.zoackadventures.models.Transaction;
 import com.verisence.zoackadventures.services.PaymentService;
-import com.verisence.zoackadventures.utils.DotsIndicatorDecoration;
 import com.verisence.zoackadventures.utils.Helpers;
+import com.verisence.zoackadventures.utils.dialogs.CommunicationDialogs;
+import com.verisence.zoackadventures.utils.dialogs.DialogInfo;
+import com.verisence.zoackadventures.utils.dialogs.DialogType;
 
 import org.parceler.Parcels;
 
@@ -50,7 +44,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +83,7 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
 
 
     TextView payBtn;
+    ProgressBar progressBar;
     FirebaseAuth firebaseAuth;
     FirebaseUser currentUser;
     TransactionsAdapter adapter;
@@ -99,6 +93,7 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
     AlertDialog.Builder descDialog;
 
     private Payment mPayment;
+    private CommunicationDialogs communicationDialogs;
 
     String location;
 
@@ -115,6 +110,7 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPayment = Parcels.unwrap(getArguments().getParcelable("payment"));
+        communicationDialogs = new CommunicationDialogs(getContext());
     }
 
     @Override
@@ -132,31 +128,8 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
-        if(mPayment.getTransactions() != null && mPayment.getTransactions().size() > 0){
-            user.setVisibility(View.GONE);
-            paymentHistory.setVisibility(View.GONE);
-            transactions.setVisibility(View.VISIBLE);
 
-            ArrayList<Transaction> transactionsList = mPayment.getTransactions();
-            float remainingAmount = Float.parseFloat(Helpers.removeCommas(mPayment.getAmount().split(" ")[1]));
-            for (Transaction t: transactionsList) {
-                if(t.getValue().equals("0")){
-                    remainingAmount  = remainingAmount - Float.parseFloat(t.getValue());
-                }else{
-                    remainingAmount  = remainingAmount - Float.parseFloat(t.getValue().split(" ")[1]);
-                }
-
-            }
-            amountRemaining.setText(String.valueOf(remainingAmount));
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-            transactions.setLayoutManager(layoutManager);
-            adapter = new TransactionsAdapter(getContext(),transactionsList);
-            transactions.setAdapter(adapter);
-        }else {
-            user.setText("Hello "+currentUser.getDisplayName()+",");
-        }
-
-
+        refreshTransactions();
         getDetails.setOnClickListener(this);
         addPaymentTwo.setOnClickListener(this);
 
@@ -190,12 +163,15 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
             TextInputLayout cash  = dialog.findViewById(R.id.amount);
             TextInputLayout number = dialog.findViewById(R.id.phoneNumber);
             payBtn = dialog.findViewById(R.id.payBtn);
+            progressBar = dialog.findViewById(R.id.payment_progress);
+            payButtonState(payBtn,progressBar,false);
             payBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(!validatePhoneNumber(number) | !validateAmount(cash)){
                         return;
                     }else {
+                        payButtonState(payBtn,progressBar,true);
                         ArrayList<Transaction> transactions = mPayment.getTransactions();
                         if(transactions == null){
                             transactions = new ArrayList<>();
@@ -221,13 +197,25 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Error "+e);
+                                DialogInfo dialogInfo = Helpers.addFailureHandler(e);
+                                if(dialogInfo == null){
+                                    DialogInfo dialogInfoTwo  = new DialogInfo(DialogType.TRANSACTION_NOT_PROCESSED,null);
+                                    communicationDialogs.init(dialogInfoTwo);
+                                    payButtonState(payBtn,progressBar,false);
+                                }else {
+                                    dialog.cancel();
+                                    payButtonState(payBtn,progressBar,false);
+                                    communicationDialogs.init(dialogInfo);
+                                }
                             }
 
                             @Override
-                            public void onResponse(Call call, Response response) throws IOException {
+                            public void onResponse(Call call, Response response) {
                                 System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Response "+response);
+
+
                             }
-                        },100,number.getEditText().getText().toString(),uid,mPayment.getPushID(),String.valueOf(transactions.size()-1));
+                        },Integer.parseInt(cash.getEditText().getText().toString().trim()),formatNumber(number.getEditText().getText().toString()),uid,mPayment.getPushID(),String.valueOf(transactions.size()-1));
 
                         DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference()
                                 .child(Constants.FIREBASE_CHILD_TRANSACTIONS)
@@ -235,22 +223,29 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
                                 .child(mPayment.getPushID())
                                 .child(Constants.FIREBASE_CHILD_TRANSACTIONS);
 
-                        ArrayList<Transaction> finalTransactions = transactions;
                         databaseref.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                                     if(ds.getKey().equals(String.valueOf(dataSnapshot.getChildrenCount()-1))){
                                         Transaction transactionToUpdate = ds.getValue(Transaction.class);
-                                        if(transactionToUpdate.getStatus().equalsIgnoreCase("pending")){
-                                            Toast.makeText(getActivity(), "pending", Toast.LENGTH_SHORT).show();
-                                        }else if(transactionToUpdate.getStatus().equalsIgnoreCase("success")) {
-                                            Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
-                                        }else if(transactionToUpdate.getStatus().equalsIgnoreCase("failed")){
-                                            Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                                        if(transactionToUpdate != null){
+                                             if(transactionToUpdate.getStatus().equalsIgnoreCase("success")) {
+                                                dialog.cancel();
+                                                DialogInfo dialogInfo  = new DialogInfo(DialogType.SUCCESSFUL_PAYMENT,"You have made a successful payment.");
+                                                communicationDialogs.init(dialogInfo);
+
+
+                                            }else if(transactionToUpdate.getStatus().equalsIgnoreCase("failed")){
+                                                dialog.cancel();
+                                                DialogInfo dialogInfo  = new DialogInfo(DialogType.TRANSACTION_NOT_PROCESSED,null);
+                                                communicationDialogs.init(dialogInfo);
+                                            }
                                         }
+
                                     }
                                 }
+
                             }
 
                             @Override
@@ -294,6 +289,64 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void refreshTransactions() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = currentUser.getUid();
+
+        DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference()
+                .child(Constants.FIREBASE_CHILD_TRANSACTIONS)
+                .child(uid)
+                .child(mPayment.getPushID())
+                .child(Constants.FIREBASE_CHILD_TRANSACTIONS);
+        databaseref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Transaction> newTransactions = new ArrayList<>();
+                for(DataSnapshot ds :dataSnapshot.getChildren()){
+                    Transaction transaction = ds.getValue(Transaction.class);
+
+                    if(transaction.getStatus().equalsIgnoreCase("success")){
+                       newTransactions.add(transaction);
+                    }
+
+                }
+                setupTransactionsView(newTransactions);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+    }
+
+    private void setupTransactionsView(ArrayList<Transaction> newTransactions) {
+
+        if(newTransactions.size() > 0){
+            user.setVisibility(View.GONE);
+            paymentHistory.setVisibility(View.GONE);
+            transactions.setVisibility(View.VISIBLE);
+
+            float remainingAmount = Float.parseFloat(Helpers.removeCommas(mPayment.getAmount().split(" ")[1]));
+            for (Transaction t: newTransactions) {
+              remainingAmount  = remainingAmount - Float.parseFloat(t.getValue().split(" ")[1]);
+            }
+            amountRemaining.setText(Helpers.numberWithCommas(remainingAmount));
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+            transactions.setLayoutManager(layoutManager);
+            adapter = new TransactionsAdapter(getContext(),newTransactions);
+            transactions.setAdapter(adapter);
+        }else {
+            user.setText("Hello "+currentUser.getDisplayName()+",");
+
+        }
+
+    }
+
     public boolean validatePhoneNumber(TextInputLayout number){
         String numberInput = number.getEditText().getText().toString().trim();
         if(numberInput.isEmpty()){
@@ -308,6 +361,17 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+    public String formatNumber(String number){
+        String modified = "-"+number;
+        if(modified.contains("-0")){
+           return modified.replaceAll("-0","+254");
+        }else if(modified.contains("-254")){
+            return modified.replaceAll("-254","+254");
+        }else if(modified.contains("-+254")){
+            return modified;
+        }
+        return null;
+    }
     public boolean validateAmount(TextInputLayout amount){
         String amountInput = amount.getEditText().getText().toString().trim();
         if(amountInput.isEmpty()){
@@ -321,5 +385,17 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
             return true;
         }
 
+    }
+
+    public void payButtonState(TextView button, ProgressBar progressBar, boolean shouldLoad){
+        if(shouldLoad){
+            progressBar.setVisibility(View.VISIBLE);
+            button.setAlpha((float) 0.5);
+            button.setText("");
+        }else {
+            progressBar.setVisibility(View.INVISIBLE);
+            button.setAlpha((float) 1.0);
+            button.setText(getContext().getResources().getString(R.string.pay));
+        }
     }
 }

@@ -84,9 +84,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ProgressBar
+                android:id="@+id/payment_progress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="6dp"
+                android:theme="@style/progressBar"
+                android:translationZ="10dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/payBtn"
+                android:alpha="1"
                 android:background="@drawable/pay_dialog_bcg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -100,6 +113,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.511" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
