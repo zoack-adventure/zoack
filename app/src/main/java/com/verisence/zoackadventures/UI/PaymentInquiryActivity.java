@@ -1,24 +1,18 @@
 package com.verisence.zoackadventures.UI;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,8 +34,6 @@ import com.verisence.zoackadventures.utils.dialogs.CommunicationDialogs;
 import com.verisence.zoackadventures.utils.dialogs.DialogInfo;
 import com.verisence.zoackadventures.utils.dialogs.DialogType;
 
-import org.parceler.Parcels;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,7 +48,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class PaymentInquiryFragment extends Fragment implements View.OnClickListener {
+public class PaymentInquiryActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.hotelImageView)
     ImageView mImageLabel;
     @BindView(R.id.amountRem)
@@ -98,29 +90,12 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
     private Payment mPayment;
     private CommunicationDialogs communicationDialogs;
 
-    String location;
-
-    public static Fragment newInstance(Payment payment) {
-        // Required empty public constructor
-        PaymentInquiryFragment paymentInquiryFragment = new PaymentInquiryFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("payment", Parcels.wrap(payment));
-        paymentInquiryFragment.setArguments(args);
-        return paymentInquiryFragment;
-    }
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPayment = Parcels.unwrap(getArguments().getParcelable("payment"));
-        communicationDialogs = new CommunicationDialogs(getContext());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_payment_list, container, false);
-        ButterKnife.bind(this, view);
+        setContentView(R.layout.activity_payment_inquiry);
+        ButterKnife.bind(this);
+        communicationDialogs = new CommunicationDialogs(this);
         Picasso.get().load(mPayment.getHotel().getImageUrl()).into(mImageLabel);
         amountRemaining.setText(mPayment.getAmount());
         String startdate = mPayment.getArrivalDate();
@@ -133,10 +108,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
         refreshTransactions();
         getDetails.setOnClickListener(this);
         addPaymentTwo.setOnClickListener(this);
-
-        return view;
     }
-
 
     public long getDaysBetweenDates(String start) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
@@ -158,7 +130,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.equals(addPaymentTwo)){
-            final Dialog dialog = new Dialog(getContext());
+            final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.payment_dialog);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.roundbcg);
             TextInputLayout cash  = dialog.findViewById(R.id.amount);
@@ -262,7 +234,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
             dialog.show();
         }
         if(view.equals(getDetails)){
-            final Dialog dialog = new Dialog(getContext());
+            final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.details_dialog);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.roundbcg);
             start_date = dialog.findViewById(R.id.start_date);
@@ -337,9 +309,9 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
             }
             amountRemaining.setText(Helpers.numberWithCommas(remainingAmount));
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
             transactions.setLayoutManager(layoutManager);
-            adapter = new TransactionsAdapter(getContext(),newTransactions);
+            adapter = new TransactionsAdapter(this,newTransactions);
             transactions.setAdapter(adapter);
         }else {
             user.setText("Hello "+currentUser.getDisplayName()+",");
@@ -396,7 +368,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
         }else {
             progressBar.setVisibility(View.INVISIBLE);
             button.setAlpha((float) 1.0);
-            button.setText(getContext().getResources().getString(R.string.pay));
+            button.setText(this.getResources().getString(R.string.pay));
         }
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_unavailable_title">Unfortunately the network connection is not available</string>
+    <string name="network_unavailable_description">Please verify your internet connection</string>
+    <string name="dismiss_button">Dismiss</string>
+    <string name="success_payment_button_text">Done</string>
+    <string name="cancel_payment_button_text">Yes! I’m sure</string>
+    <string name="try_again">Try again</string>
+    <string name="make_another_payment_text">Make another payment</string>
+    <string name="proceed_with_payment_text">No! proceed with payment</string>
+    <string name="cutoff_time_title">Payment will be delivered within 24 hours</string>
+    <string name="cutoff_time_description">The cut-off time for this payment has  exceeded, the payment execution date will be the next business day</string>
+
+    <string name="service_unavailable_title">Unfortunately the service is not available now</string>
+    <string name="unauthorized_title">Unfortunately you are not authorized to use this service</string>
+    <string name="service_unavailable_desc">Please try again later or contact us at customercare@imbank.co.ke or on (+254)–020–322100</string>
+    <string name="unauthorized_desc">You will be logged out. Please try and log back in.</string>
+    <string name="successful_payment_title">You have made a successful payment</string>
+    <string name="cancel_payment_title">Are you sure you want to cancel this payment?</string>
+    <string name="cancel_payment_description">Are you sure to sure you want to cancel this payment? All the information entered will be lost.</string>
+    <string name="successful_payment_description">OGI5UBQO5T Confirmed. KES 37,500.00 sent to Chandrakanth Mangalarapu on 18-Jul-20 at 11:00 AM. </string>
+
+    <string name="transaction_not_processed_title">Unable to process the transaction</string>
+    <string name="transaction_not_processed_desc">Please ensure you have sufficient funds to process the transaction or contact us at customercare@imbank.co.ke or on (+254)–020–322100</string>
+</resources>

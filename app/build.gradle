@@ -48,6 +48,12 @@ repositories {
         url  "http://dl.bintray.com/africastalking/java"
     }
 
+    android.sourceSets {
+        main.res.srcDirs = ['src/main/res', 'src/main/res-dialogs']
+    }
+
+
+
 }
 dependencies {
     implementation 'com.littlemango:stacklayoutmanager:1.0.5'

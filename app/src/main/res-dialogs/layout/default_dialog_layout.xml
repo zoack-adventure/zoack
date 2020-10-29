@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="25dp"
+    android:orientation="vertical"
+    android:background="@drawable/default_dialog_background">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="27dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/dialog_icon_background"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:gravity="center"
+            >
+
+            <View
+                android:id="@+id/dialog_image"
+                android:background="@drawable/ic_tick"
+                android:layout_width="48dp"
+                android:backgroundTint="@color/black"
+                android:layout_height="48dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="@string/oops"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dialog_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/grayText"
+        android:lineSpacingExtra="7sp"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="center_horizontal"
+        tools:text="@string/no_internet"
+        android:gravity="center"
+        android:maxWidth="236dp"
+        />
+
+    <Button
+        android:id="@+id/action_button"
+        android:text="@string/success_payment_button_text"
+        android:background="@drawable/bg_rounded_modal_background"
+        android:backgroundTint="@color/zoack_green_dark"
+        android:layout_width="114dp"
+        android:layout_height="33dp"
+        android:textSize="16sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="8sp"
+        android:textAllCaps="false"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="17dp"/>
+
+    <TextView
+        android:id="@+id/action_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:padding="5dp"
+        android:textColor="@color/zoack_green_dark"
+        android:lineSpacingExtra="8sp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/dismiss_button"
+        android:layout_marginBottom="5dp"/>
+
+</LinearLayout>

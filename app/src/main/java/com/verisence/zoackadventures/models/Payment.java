@@ -2,11 +2,12 @@ package com.verisence.zoackadventures.models;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 @Parcel
-public class Payment {
+public class Payment implements Serializable {
     public Hotel hotel;
     public ArrayList<Transaction> transactions;
     public String arrivalDate;

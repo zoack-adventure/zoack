@@ -7,10 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.solver.state.HelperReference;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Transaction;
+import com.verisence.zoackadventures.utils.Helpers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,17 +63,19 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
+        if(mTransactions.get(position).getStatus().equalsIgnoreCase("success")){
+            SimpleDateFormat dateformat= new SimpleDateFormat("dd-MMM-yyyy");
 
+            String stringDate = "Transaction date: " + dateformat.format( mTransactions.get(position).getDate());
 
-        SimpleDateFormat dateformat= new SimpleDateFormat("dd-MMM-yyyy");
+            TextView amount  = holder.amountValue;
+            TextView date = holder.date;
+            date.setText(stringDate);
+            long floatAmount = Long.parseLong(mTransactions.get(position).getValue().split(" ")[1].split("\\.")[0]);
+            String commaAmount = Helpers.numberWithCommas(floatAmount);
+            amount.setText(commaAmount);
 
-        String stringDate = "Transaction date: " + dateformat.format( mTransactions.get(position).getDate());
-
-        TextView amount  = holder.amountValue;
-        TextView date = holder.date;
-        date.setText(stringDate);
-        amount.setText(String.valueOf(mTransactions.get(position).getValue()));
-//        Toast.makeText(context, String.valueOf(mTransactions.get(position)), Toast.LENGTH_SHORT).show();
+        }
 
     }
 
