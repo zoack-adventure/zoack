@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.PaymentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiteC"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:elevation="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payments"
+                android:textColor="@color/blackText"
+                android:textSize="20sp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/robotoblack_powx"
+                android:layout_gravity="right"
+                android:id="@+id/toolbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:background="@color/lightgrey">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/hotelsRecyclerView"/>
+
+            <RelativeLayout
+                android:id="@+id/errorRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/error_message"
+                    android:textSize="18sp"
+                    android:paddingBottom="60dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorIcons"
+                    android:layout_width="wrap_content"
+                    android:text="@string/no_payments"
+                    android:fontFamily="@font/lato_medium"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content"/>
+
+
+                <TextView
+                    android:id="@+id/oops"
+                    android:textSize="40sp"
+                    android:paddingBottom="20dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:text="@string/oops"
+                    android:fontFamily="@font/robotoblack_powx"
+                    android:layout_above="@+id/error_message"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_attention"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_above="@id/oops"/>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</FrameLayout>

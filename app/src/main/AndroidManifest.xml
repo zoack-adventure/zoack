@@ -18,11 +18,8 @@
         <activity android:name=".UI.PaymentDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UI.PaymentActivityTest" />
+                android:value=".UI.PaymentActivity" />
         </activity>
-        <activity android:name=".UI.PaymentActivityTest" />
-        <activity android:name=".UI.PaymentActivity" />
-        <activity android:name=".UI.FavoritesActivity" />
         <activity
             android:name=".UI.ContactsActivity"
             android:label="Contacts"
@@ -50,9 +47,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.MainActivity" />
         </activity>
-        <activity
-            android:name=".UI.ProfileActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.SplashActivity"
             android:screenOrientation="portrait">
