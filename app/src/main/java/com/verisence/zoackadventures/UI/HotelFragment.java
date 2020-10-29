@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,8 +35,6 @@ import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.Mpesa.ApiClient;
 import com.verisence.zoackadventures.Mpesa.model.AccessToken;
-import com.verisence.zoackadventures.Mpesa.model.STKPush;
-import com.verisence.zoackadventures.Mpesa.utils;
 import com.verisence.zoackadventures.R;
 import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.models.Payment;
@@ -61,15 +57,9 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 import static com.verisence.zoackadventures.Constants.KSH;
-import static com.verisence.zoackadventures.Mpesa.AppConstants.BUSINESS_SHORT_CODE;
-import static com.verisence.zoackadventures.Mpesa.AppConstants.CALLBACKURL;
-import static com.verisence.zoackadventures.Mpesa.AppConstants.PARTYB;
-import static com.verisence.zoackadventures.Mpesa.AppConstants.PASSKEY;
-import static com.verisence.zoackadventures.Mpesa.AppConstants.TRANSACTION_TYPE;
 
 public class HotelFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.hotelImageView)
@@ -353,7 +343,8 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                         String pushId = pushRef.getKey();
                         payment.setPushID(pushId);
                         pushRef.setValue(payment);
-                        Intent intent = new Intent(getContext(),PaymentActivityTest.class);
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.putExtra(Constants.NAVIGATION,Constants.PAYMENTS_PAGE);
                         startActivity(intent);
                 }
             });
@@ -366,7 +357,6 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         if(v == favoriteBtn){
 
-//            alertDialog.setMessage("Would you like to add " + mHotel.getName() + " to your favorites list?");
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             String uid = user.getUid();
             DatabaseReference savedHotelRef = FirebaseDatabase

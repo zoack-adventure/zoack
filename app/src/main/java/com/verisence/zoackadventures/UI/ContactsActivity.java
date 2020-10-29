@@ -34,11 +34,9 @@ import butterknife.ButterKnife;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class ContactsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+public class ContactsActivity extends AppCompatActivity implements  View.OnClickListener{
 
-    private DrawerLayout drawer;
 
-    NavigationView navigationView;
 
     @BindView(R.id.contactUs)
     TextView contactDrawer;
@@ -61,9 +59,7 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = findViewById(R.id.drawer_layout);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         web = findViewById(R.id.contactWeb);
         email = findViewById(R.id.contactEmail);
@@ -78,10 +74,7 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
 //        emailText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email_black_24dp,0,0,0);
 
 
-        View view = navigationView.inflateHeaderView(R.layout.nav_header);
-        TextView navUsername = view.findViewById(R.id.nav_header_name);
-        TextView navEmail = view.findViewById(R.id.nav_header_mail);
-        ImageView navImage = view.findViewById(R.id.nav_header_photo);
+
 //        setUpFireBaseAdapter();
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -98,38 +91,10 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
         databaseReference = firebaseDatabase.getReference("Users");
         storageReference = getInstance().getReference();
 
-        Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    //get data
-                    String name = "" + ds.child("name").getValue();
-                    String email = "" + ds.child("email").getValue();
-                    String phone = "" + ds.child("phone").getValue();
-                    String image = "" + ds.child("image").getValue();
 
-                    navUsername.setText(name);
-                    navEmail.setText(email);
-//                    phoneTv.setText(phone);
-                    try {
-                        Picasso.get().load(image).into(navImage);
-                    } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_face_black_24dp).into(navImage);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         contactDrawer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
         contactDrawer.setOnClickListener(this);
@@ -137,52 +102,10 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
         email.setOnClickListener(this);
         phone.setOnClickListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.nav_main);
-        }
 
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_main:
-                startActivity(new Intent(ContactsActivity.this, MainActivity.class));
-                break;
-            case R.id.nav_profile:
-                startActivity(new Intent(ContactsActivity.this, ProfileActivity.class));
-                break;
-            case R.id.nav_logout:
-                logout();
-                break;
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
-
-    private void logout() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(ContactsActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
-        }else {
-            super.onBackPressed();
-        }
-    }
 
 
 

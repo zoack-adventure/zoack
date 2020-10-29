@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <group>
         <item android:id="@+id/nav_main"
             android:icon="@drawable/ic_location_on_black_24dp"
             android:title="Destinations"/>
@@ -17,12 +16,7 @@
         <item android:id="@+id/nav_payments"
             android:icon="@drawable/ic_monetization_on_black_24dp"
             android:title="Payments"/>
-    </group>
-    <item android:title="...">
-        <menu>
-            <item android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="Logout"/>
-        </menu>
-    </item>
+        <item android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="Logout"/>
 </menu>

@@ -17,4 +17,7 @@ public class Constants {
     public static final String PHONENUMBER = "phoneNumber";
     public static final String CURRENCY_CODE = "currencyCode";
     public static final String AMOUNT = "amount";
+    public static final String NAVIGATION = "navigation";
+    public static final String PAYMENTS_PAGE = "payments_page";
+    public static final String PAYMENT_OBJECT = "payments_object";
 }
