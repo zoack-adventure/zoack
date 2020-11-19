@@ -30,7 +30,7 @@
             android:label="Hotels"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar.Transparent">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.HotelsActivity" />
@@ -39,18 +39,22 @@
             android:name=".UI.HotelsActivity"
             android:label="Hotels"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar.Transparent" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.DestinationDetailActivity"
             android:label="Destinations"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.MainActivity" />
         </activity>
         <activity
             android:name=".UI.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,7 +67,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".UI.SignUpActivity"
             android:screenOrientation="portrait" />

@@ -25,6 +25,7 @@
     <color name="light_blue">#00ccff</color>
     <color name="black_shade">#38000000</color>
     <color name="zoack_orange">#e3551f</color>
+    <color name="zoack_orange_light">#50e3551f</color>
     <color name="zoack_green">#65a23b</color>
     <color name="zoack_green_dark">#4F802E</color>
     <color name="charcoal">#404040</color>

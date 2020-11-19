@@ -26,8 +26,7 @@
             <item name="colorPrimary">@color/whiteC</item>
             <item name="colorPrimaryDark">@color/zoack_green</item>
             <item name="colorAccent">@color/turquoise</item>
-            <item name="windowActionBar">false</item>-->
-                    <item name="windowNoTitle">true</item>
+            <item name="titleTextColor">@color/charcoal</item>
         </style>
     <style name="AppTheme.ActionBar.Transparent" parent="AppTheme">
         <item name="android:windowContentOverlay">@null</item>

@@ -38,9 +38,6 @@ public class ContactsActivity extends AppCompatActivity implements  View.OnClick
 
 
 
-    @BindView(R.id.contactUs)
-    TextView contactDrawer;
-
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
@@ -96,8 +93,7 @@ public class ContactsActivity extends AppCompatActivity implements  View.OnClick
 //        NavigationView navigationView = findViewById(R.id.nav_view);
 //        navigationView.setNavigationItemSelectedListener(this);
 
-        contactDrawer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_black_24dp,0,0,0);
-        contactDrawer.setOnClickListener(this);
+
         web.setOnClickListener(this);
         email.setOnClickListener(this);
         phone.setOnClickListener(this);
@@ -111,9 +107,7 @@ public class ContactsActivity extends AppCompatActivity implements  View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (v==contactDrawer){
-            startActivity(new Intent(ContactsActivity.this, ContactsActivity.class));
-        }
+
         if (v==phone){
             Intent phoneIntent = new Intent(Intent.ACTION_DIAL,
                     Uri.parse("tel:+254746079970"));

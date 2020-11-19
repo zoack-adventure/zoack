@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_main"
+        android:icon="@drawable/ic_location_on_black_24dp"
+        android:title="Terms &amp; Conditions"/>
+
+    <item android:id="@+id/nav_favorites"
+        android:icon="@drawable/ic_star_border_black_24dp"
+        android:title="Contact Us"/>
+
+    <item android:id="@+id/nav_payments"
+        android:icon="@drawable/ic_save_money"
+        android:title="Logout"/>
+
+</menu>

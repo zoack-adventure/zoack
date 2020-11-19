@@ -87,31 +87,13 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -207,50 +189,47 @@ public class ProfileFragment extends Fragment {
 
         StorageReference ref = storageReference.child(filePathAndName);
         ref.putFile(image_uri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                .addOnSuccessListener(taskSnapshot -> {
 
+                    pd.dismiss();
+
+                    Toast.makeText(getContext(), "Profile Picture Uploaded", Toast.LENGTH_SHORT).show();
+
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isSuccessful());
+
+                    Uri downloadUri = uriTask.getResult();
+
+                    if (uriTask.isSuccessful()) {
+                        HashMap<String, Object> results = new HashMap<>();
+                        assert downloadUri != null;
+                        results.put("image", downloadUri.toString());
+
+
+                        databaseReference.child(user.getUid()).updateChildren(results)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        pd.dismiss();
+                                        Toast.makeText(getContext(), "Image Updated...", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                        pd.dismiss();
+                                        Toast.makeText(getContext(), "Error Updating Image...", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                    } else {
                         pd.dismiss();
-
-                        Toast.makeText(getContext(), "Profile Picture Uploaded", Toast.LENGTH_SHORT).show();
-
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful());
-
-                        Uri downloadUri = uriTask.getResult();
-
-                        if (uriTask.isSuccessful()) {
-                            HashMap<String, Object> results = new HashMap<>();
-                            assert downloadUri != null;
-                            results.put("image", downloadUri.toString());
-
-
-                            databaseReference.child(user.getUid()).updateChildren(results)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-
-                                            pd.dismiss();
-                                            Toast.makeText(getContext(), "Image Updated...", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                            pd.dismiss();
-                                            Toast.makeText(getContext(), "Error Updating Image...", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    });
-                        } else {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Some Error Occurred", Toast.LENGTH_SHORT).show();
-                        }
-
+                        Toast.makeText(getContext(), "Some Error Occurred", Toast.LENGTH_SHORT).show();
                     }
+
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -270,6 +249,7 @@ public class ProfileFragment extends Fragment {
         });
 
     }
+
     private void showImagePicDialog() {
         //dialog containing camera and gallery to pick the image
         String[] options = {"Camera", "Gallery"};
@@ -403,7 +383,7 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == Constants.IMAGE_PICK_GALLERY_REQUEST_CODE) {
-                requestCameraPermission();
+//                requestCameraPermission();
                 image_uri = data.getData();
 
                 uploadProfileCoverPhoto(image_uri);
