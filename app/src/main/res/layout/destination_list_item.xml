@@ -67,6 +67,24 @@
                 android:layout_centerInParent="true"
                 android:text="Destination name"/>
 
+            <RatingBar
+                android:visibility="gone"
+                android:id="@+id/ratingBar1"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/destinationNameTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"
+                android:isIndicator="true"
+                android:max="5"
+                android:progressBackgroundTint="@color/whiteC"
+                android:progressTint="@color/zoack_green"
+                android:scaleX=".75"
+                android:scaleY=".75"
+                android:secondaryProgressTint="@android:color/transparent"
+                android:stepSize="0.01" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

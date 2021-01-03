@@ -1,126 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
+    <ImageView
+        android:id="@+id/hotelImageView"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        app:cardBackgroundColor="@color/whiteC"
-        android:foreground="?attr/selectableItemBackground"
-        >
-        <RelativeLayout
+        android:layout_height="300dp"
+        android:background="@drawable/roundbcg"
+        android:scaleType="centerCrop"
+        android:src="@drawable/resimg"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            android:layout_width="match_parent"
-            android:background="@color/colorWhite"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:background="@drawable/roundbcg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/hotelImageView"
-                android:src="@drawable/resimg"
-                android:visibility="invisible"
-                android:scaleType="centerCrop"/>
 
-<!--            <ImageView-->
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ratingBar1"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/gradient"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/lato_medium"
+        android:padding="15dp"
+        android:paddingLeft="5dp"
+        android:text="view details"
+        android:textAllCaps="true"
+        android:textColor="@color/whiteC"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar1" />
 
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="@color/black" />-->
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hotelNameTextView"
+        android:layout_centerHorizontal="true"
+        android:isIndicator="true"
+        android:max="5"
+        android:progressBackgroundTint="@color/whiteC"
+        android:progressTint="@color/zoack_green"
+        android:scaleX=".75"
+        android:scaleY=".75"
+        android:secondaryProgressTint="@android:color/transparent"
+        android:stepSize="0.01"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hotelNameTextView" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/smallImg"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="10dp"
-                android:elevation="@dimen/cardview_default_elevation"
-                app:cardBackgroundColor="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackground">
+    <TextView
+        android:id="@+id/hotelNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/robotobold"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="16dp"
+        android:textAllCaps="true"
+        android:textColor="@color/blackText"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ratingBar1"
+        app:layout_constraintTop_toBottomOf="@+id/hotelImageView"
+        tools:layout_editor_absoluteX="0dp"
+        tools:text="Hotel name" />
 
-                <ImageView
-                    android:id="@+id/imageHotel"
-                    android:src="@drawable/resimg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"/>
 
-            </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:fontFamily="@font/robotobold"
-                android:id="@+id/hotelNameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_below="@+id/smallImg"
-                android:maxLines="7"
-                android:gravity="center"
-                android:ellipsize="end"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textColor="@color/blackText"
-                android:textSize="20sp"
-                android:text="Hotel name"/>
 
-<!--            <TextView-->
-<!--                android:fontFamily="@font/robotobold"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/hotelNameTextView"-->
-<!--                android:id="@+id/ratingTv"-->
-<!--                android:text="rating"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:padding="16dp"-->
-<!--                android:maxLines="7"-->
-<!--                android:ellipsize="end"-->
-<!--                android:textAllCaps="true"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="15sp"/>-->
-            <RatingBar
-                style="?android:attr/ratingBarStyleIndicator"
-                android:scaleX=".75"
-                android:scaleY=".75"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/ratingBar1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:max="5"
-                android:progressTint="@color/zoack_green"
-                android:secondaryProgressTint="@android:color/transparent"
-                android:progressBackgroundTint="@color/whiteC"
-                android:layout_below="@+id/hotelNameTextView"
-                android:stepSize="0.01" />
-
-            <TextView
-                android:padding="15dp"
-                android:layout_centerInParent="true"
-                android:layout_margin="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ratingBar1"
-                android:background="@drawable/gradient"
-                android:paddingLeft="5dp"
-                android:textAllCaps="true"
-                android:textSize="15sp"
-                android:textColor="@color/whiteC"
-                android:fontFamily="@font/lato_medium"
-                android:text="view details"
-                android:drawablePadding="5dp"
-              />
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+    <!--</androidx.core.widget.NestedScrollView>-->

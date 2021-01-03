@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,6 +109,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     StorageReference storageReference;
     String phoneNumber;
     Helpers helpers;
+    private Boolean isFavorite = false;
 
 
 
@@ -161,7 +163,8 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                     if(snapshot != null){
                         String favoriteHotel =""+ snapshot.child("name").getValue();
                         if(favoriteHotel.equals(mHotel.getName())){
-                            favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                            favoriteBtn.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                            isFavorite = true;
                         }
                     }
 
@@ -357,78 +360,26 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         if(v == favoriteBtn){
 
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            String uid = user.getUid();
-            DatabaseReference savedHotelRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference(Constants.FIREBASE_CHILD_SAVED_HOTELS)
-                    .child(uid);
+            if(!isFavorite){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getUid();
+                DatabaseReference savedHotelRef = FirebaseDatabase
+                        .getInstance()
+                        .getReference(Constants.FIREBASE_CHILD_SAVED_HOTELS)
+                        .child(uid);
 
-            DatabaseReference pushRef = savedHotelRef.push();
-            String pushId = pushRef.getKey();
-            mHotel.setPushID(pushId);
-            pushRef.setValue(mHotel);
-            favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                DatabaseReference pushRef = savedHotelRef.push();
+                String pushId = pushRef.getKey();
+                mHotel.setPushID(pushId);
+                pushRef.setValue(mHotel);
+                favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+            }
+
+
 
         }
     }
-//    public void performSTKPush(String phone_number, String amount) {
-//        mProgressDialog.setMessage("Sending Mpesa payment request of "+amount+" to " + phone_number);
-//        mProgressDialog.setCancelable(true);
-//        mProgressDialog.setTitle("Please Wait...");
-//        mProgressDialog.setIndeterminate(true);
-//        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        mProgressDialog.show();
-//        String timestamp = utils.getTimestamp();
-//        STKPush stkPush = new STKPush(
-//                BUSINESS_SHORT_CODE,
-//                utils.getPassword(BUSINESS_SHORT_CODE, PASSKEY, timestamp),
-//                timestamp,
-//                TRANSACTION_TYPE,
-//                String.valueOf(amount),
-//                utils.sanitizePhoneNumber(phone_number),
-//                PARTYB,
-//                utils.sanitizePhoneNumber(phone_number),
-//                CALLBACKURL,
-//                "test", //The account reference
-//                "test"  //The transaction description
-//        );
-//
-//        mApiClient.setGetAccessToken(false);
-//
-//
-//        mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
-//            @Override
-//            public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
-//                mProgressDialog.dismiss();
-//                try {
-//                    if (response.isSuccessful()) {
-//                        Toast.makeText(getContext(),"Payment request sent successfully",Toast.LENGTH_LONG).show();
-//                        System.out.println(">>>>>>>>>>>>>>>>>>>>"+response);
-//                        Timber.d("post submitted to API. %s", response.body());
-//
 
-//                    } else {
-//                        Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
-//                        Timber.e("Response %s", response.errorBody().string());
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            @Override
-//            public void onFailure(@NonNull Call<STKPush> call, @NonNull Throwable t) {
-//                mProgressDialog.dismiss();
-//                Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
-//                Timber.e(t);
-//            }
-//        });
-//    }
     public static long getDaysBetweenDates(String start, String end) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         Date startDate, endDate;
