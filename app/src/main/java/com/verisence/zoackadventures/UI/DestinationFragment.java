@@ -88,10 +88,6 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
 
         if (v == mViewHotels) {
             location = mDestination.getName();
-            Intent intent = new Intent(getActivity(), HotelsActivity.class);
-            intent.putExtra("current location",location);
-            startActivity(intent);
-            ((Activity) getActivity()).overridePendingTransition(0, 0);
             final ArrayList<Hotel> hotels = new ArrayList<>();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference reference = database.getReference(Constants.FIREBASE_CHILD_HOTELS);
