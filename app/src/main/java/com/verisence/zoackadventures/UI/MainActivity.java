@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     ImageView profileImg;
 
     private ActionBar actionBar;
-
+    private MenuItem selectedMenuItem;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        selectedMenuItem = item;
         switch (item.getItemId()){
             case R.id.nav_main:
                 MainFragment mainFragment = MainFragment.newInstance();
@@ -151,5 +152,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.onNavigationItemSelected(selectedMenuItem);
+    }
 }
 

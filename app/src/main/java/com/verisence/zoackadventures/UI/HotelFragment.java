@@ -293,7 +293,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                     totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
-//
+
             child_add_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -315,13 +315,10 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
                 }
             });
-//
-//
+
             payBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //need to get the proper phone number
-//                    performSTKPush(phoneNumber,String.valueOf(10));
                         Payment payment = new Payment();
                         ArrayList<Transaction> transactions = new ArrayList<>();
                         payment.setAdults((adult_count.getText().toString()));
