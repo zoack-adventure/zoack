@@ -279,21 +279,18 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 public void onClick(View view) {
                     adultNumber[0] = adultNumber[0] +1;
                     adult_count.setText(travellerNumber(adultNumber[0],"adult"));
-                    totalPrice.setText(  KSH + Helpers.numberWithCommas(getPrice(adultNumber[0])));
+                    totalPrice.setText(  KSH + Helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
             adult_minus_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adultNumber[0] = adultNumber[0] -1;
-                    if (adultNumber[0] > 0) {
-                        adult_count.setText(travellerNumber(adultNumber[0],"adult"));
-                        totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0])));
-                    } else {
+                    if (adultNumber[0] <= 0) {
                         adultNumber[0] = 0;
-                        adult_count.setText(travellerNumber(adultNumber[0],"adult"));
-                        totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0])));
                     }
+                    adult_count.setText(travellerNumber(adultNumber[0],"adult"));
+                    totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
 //
@@ -302,18 +299,18 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 public void onClick(View view) {
                     childNumber[0] = childNumber[0] +1;
                     child_count.setText(travellerNumber(childNumber[0],"child"));
+                    totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
             child_minus_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     childNumber[0] = childNumber[0] -1;
-                    if (childNumber[0] > 0) {
-                        child_count.setText(travellerNumber(childNumber[0],"child"));
-                    } else {
+                    if (childNumber[0] <= 0) {
                         childNumber[0] = 0;
-                        child_count.setText(travellerNumber(childNumber[0],"child"));
                     }
+                    child_count.setText(travellerNumber(childNumber[0],"child"));
+                    totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
 
 
                 }
@@ -489,12 +486,12 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             singular = "child";
         }
         if(number == 1){
-            return String.valueOf(number) + " " + singular;
+            return number + " " + singular;
         }else{
-            return String.valueOf(number) + " " + plural;
+            return number + " " + plural;
         }
     }
-    public Long getPrice(int adultNumber){
-        return getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * adultNumber;
+    public Long getPrice(int adultNumber, int childNumber){
+        return getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * adultNumber + getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * childNumber;
     }
 }
