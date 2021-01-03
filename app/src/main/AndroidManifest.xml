@@ -16,10 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UI.PaymentInquiryActivity"></activity>
-        <activity android:name=".UI.PaymentDetailActivity">
+        <activity android:name=".UI.PaymentDetailActivity"
+            android:label="Payment"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UI.PaymentActivity" />
+                android:value=".UI.PaymentInquiryActivity" />
         </activity>
         <activity
             android:name=".UI.ContactsActivity"

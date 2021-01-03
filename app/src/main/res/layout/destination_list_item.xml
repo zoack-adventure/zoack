@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/destinationNameTextView"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="40dp"
                 android:isIndicator="true"
                 android:max="5"
                 android:progressBackgroundTint="@color/whiteC"
