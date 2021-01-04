@@ -45,8 +45,6 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
     @BindView(R.id.viewHotels)
     Button mViewHotels;
 
-    AlertDialog.Builder descDialog;
-
     private Destination mDestination;
 
     String location;
@@ -69,11 +67,6 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        descDialog = new AlertDialog.Builder(getActivity());
-        descDialog.setTitle("Dialog via Builder");
-        descDialog.setMessage("Would you like to take a survey?");
-
         View view = inflater.inflate(R.layout.fragment_destination_list, container, false);
         ButterKnife.bind(this, view);
         Picasso.get().load(mDestination.getImageUrl()).into(mImageLabel);
@@ -91,7 +84,6 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
             final ArrayList<Hotel> hotels = new ArrayList<>();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference reference = database.getReference(Constants.FIREBASE_CHILD_HOTELS);
-//        final String location = "Diani";
 
             final Query hotelsByLocation = reference.orderByChild("location").equalTo(location);
             hotelsByLocation.keepSynced(true);
@@ -113,11 +105,6 @@ public class DestinationFragment extends Fragment implements View.OnClickListene
 
                 }
             });
-        }
-
-        if (v==mDestinationDescription){
-            descDialog.setPositiveButton("CLOSE", (dialog, which) -> dialog.dismiss());
-            descDialog.show();
         }
     }
 }

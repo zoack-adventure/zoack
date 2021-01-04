@@ -25,13 +25,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
+import com.verisence.zoackadventures.utils.dialogs.TermsDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.fragment_container)
     FrameLayout container;
@@ -44,12 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private ActionBar actionBar;
     private MenuItem selectedMenuItem;
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.more_menu,menu);
-        return true;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,26 +132,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,paymentFragment).commit();
                 actionBar.setTitle("Payments");
                 break;
-            case R.id.nav_logout:
-//                logout();
-                break;
         }
         return true;
     }
 
-    private void logout() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
         this.onNavigationItemSelected(selectedMenuItem);
     }
+
 }
 

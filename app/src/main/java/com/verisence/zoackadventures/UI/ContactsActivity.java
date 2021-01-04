@@ -54,8 +54,7 @@ public class ContactsActivity extends AppCompatActivity implements  View.OnClick
 
 
         ButterKnife.bind(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
 
         web = findViewById(R.id.contactWeb);

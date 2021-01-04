@@ -48,7 +48,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class PaymentInquiryActivity extends AppCompatActivity implements View.OnClickListener {
+public class PaymentInquiryActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.hotelImageView)
     ImageView mImageLabel;
     @BindView(R.id.amountRem)

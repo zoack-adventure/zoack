@@ -125,14 +125,14 @@
                 android:layout_marginRight="20dp"
                 android:textSize="12sp"
                 android:textAlignment="center"
-                android:text="I have read and agree to Zoack Adventure's terms of use. "/>
+                android:text="@string/read_terms_of_use"/>
 
             <Button
                 android:id="@+id/btnAccept"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Continue"
+                android:text="@string/continue_terms"
                 android:paddingEnd="15dp"
                 android:paddingStart="15dp"
                 android:layout_gravity="center_horizontal"

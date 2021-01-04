@@ -26,4 +26,13 @@
     <string name="no_internet">Seems like you have lost internet connection</string>
     <string name="not_processed">Unfortunately your transaction failed.\n Please try again later.</string>
     <string name="pay">PAY</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="logout">Logout</string>
+    <string name="terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="continue_terms">Continue</string>
+    <string name="read_terms_of_use">I have read and agree to Zoack Adventure\'s terms of use.</string>
+    <string name="email">Email</string>
+    <string name="info_zoackadventures">info@zoackadventures.co.ke</string>
+    <string name="website">www.zoackadventures.co.ke</string>
+    <string name="website_text">Website</string>
 </resources>

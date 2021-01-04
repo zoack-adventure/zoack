@@ -11,32 +11,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relative"
-        android:background="@color/zoack_green"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".UI.ContactsActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/zoack_green"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact Us"
-                android:textColor="@color/whiteC"
-                android:textSize="20sp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/robotoblack_powx"
-                android:layout_gravity="right"
-                android:id="@+id/toolbar_title" />
-        </androidx.appcompat.widget.Toolbar>
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -44,53 +22,45 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="16dp"
             android:elevation="24dp"
-            android:outlineAmbientShadowColor="@color/zoack_orange"
-            android:outlineSpotShadowColor="@color/zoack_orange"
             android:src="@drawable/logo"
             app:civ_border_color="@color/zoack_orange"
             app:civ_border_width="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:elevation="6dp"
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@+id/profileImg"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/contacts_bcg"
+            android:elevation="6dp"
             android:orientation="vertical"
             android:padding="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toBottomOf="@+id/profileImg">
 
 
             <RelativeLayout
                 android:id="@+id/contactPhone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/profileImg"
-                android:layout_toRightOf="@+id/nameIcon">
+                android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/phoneText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginLeft="30dp"
-                    android:textSize="16sp"
                     android:fontFamily="@font/robotoblack_powx"
-                    android:textColor="@color/blackText"
                     android:text="Phone"
-                    />
+                    android:textColor="@color/blackText"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/phone"
@@ -100,10 +70,10 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/blackText"
                     android:fontFamily="@font/robotothin"
-                    android:textSize="20sp"
-                    android:text="+254746079970" />
+                    android:text="+254746079970"
+                    android:textColor="@color/blackText"
+                    android:textSize="20sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -133,11 +103,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginLeft="30dp"
-                    android:text="Email"
                     android:fontFamily="@font/robotoblack_powx"
+                    android:text="Email"
                     android:textColor="@color/blackText"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/email"
@@ -147,10 +116,10 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/blackText"
                     android:fontFamily="@font/robotothin"
-                    android:textSize="20sp"
-                    android:text="info@zoackadventures.co.ke" />
+                    android:text="info@zoackadventures.co.ke"
+                    android:textColor="@color/blackText"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
@@ -193,10 +162,10 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/blackText"
                     android:fontFamily="@font/robotothin"
-                    android:textSize="20sp"
-                    android:text="www.zoackadventures.co.ke" />
+                    android:text="www.zoackadventures.co.ke"
+                    android:textColor="@color/blackText"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
         </LinearLayout>

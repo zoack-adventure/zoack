@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DestinationDetailActivity extends AppCompatActivity {
+public class DestinationDetailActivity extends BaseActivity {
 
     @BindView(R.id.viewPager)
     ViewPager mViewPager;

@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class HotelsActivity extends AppCompatActivity {
+public class HotelsActivity extends BaseActivity {
 
 
     private DatabaseReference hotelsReference;
