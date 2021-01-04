@@ -132,9 +132,9 @@ public class ProfileFragment extends Fragment {
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     //get data
 
-                    String name =  ds.getKey().equals("name") ? ds.getValue().toString() : "";
+                    String name =  ds.getKey().equals("name") ? ds.getValue().toString() : "Please enter a username";
                     String email = ds.getKey().equals("email") ? ds.getValue().toString() : user.getEmail();
-                    String phone = ds.getKey().equals("phone") ? ds.getValue().toString() : "";
+                    String phone = ds.getKey().equals("phone") ? ds.getValue().toString() : "Please enter a phone number";
                     String image = ds.getKey().equals("image") ? ds.getValue().toString() : "";
 
                     //set data
@@ -142,9 +142,15 @@ public class ProfileFragment extends Fragment {
                     emailTv.setText(email);
                     phoneTv.setText(phone);
                     try {
-                        Picasso.get().load(image).into(profileImg);
+                        if (image.isEmpty()){
+                            profileImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_person_black_large));
+                        }else {
+                            Picasso.get().load(image).into(profileImg);
+                        }
+
+
                     } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_tag_faces_black_24dp).into(profileImg);
+                        profileImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_person_black_large));
                     }
 
                 }
@@ -417,7 +423,6 @@ public class ProfileFragment extends Fragment {
             break;
             case Constants.STORAGE_REQUEST_CODE: {
                 if (grantResults.length > 0) {
-//                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (writeStorageAccepted){
                         pickFromGallery();
