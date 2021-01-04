@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,6 +109,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
     StorageReference storageReference;
     String phoneNumber;
     Helpers helpers;
+    private Boolean isFavorite = false;
 
 
 
@@ -161,7 +163,8 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                     if(snapshot != null){
                         String favoriteHotel =""+ snapshot.child("name").getValue();
                         if(favoriteHotel.equals(mHotel.getName())){
-                            favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                            favoriteBtn.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                            isFavorite = true;
                         }
                     }
 
@@ -276,52 +279,46 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
                 public void onClick(View view) {
                     adultNumber[0] = adultNumber[0] +1;
                     adult_count.setText(travellerNumber(adultNumber[0],"adult"));
-                    totalPrice.setText(  KSH + Helpers.numberWithCommas(getPrice(adultNumber[0])));
+                    totalPrice.setText(  KSH + Helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
             adult_minus_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     adultNumber[0] = adultNumber[0] -1;
-                    if (adultNumber[0] > 0) {
-                        adult_count.setText(travellerNumber(adultNumber[0],"adult"));
-                        totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0])));
-                    } else {
+                    if (adultNumber[0] <= 0) {
                         adultNumber[0] = 0;
-                        adult_count.setText(travellerNumber(adultNumber[0],"adult"));
-                        totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0])));
                     }
+                    adult_count.setText(travellerNumber(adultNumber[0],"adult"));
+                    totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
-//
+
             child_add_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     childNumber[0] = childNumber[0] +1;
                     child_count.setText(travellerNumber(childNumber[0],"child"));
+                    totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
                 }
             });
             child_minus_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     childNumber[0] = childNumber[0] -1;
-                    if (childNumber[0] > 0) {
-                        child_count.setText(travellerNumber(childNumber[0],"child"));
-                    } else {
+                    if (childNumber[0] <= 0) {
                         childNumber[0] = 0;
-                        child_count.setText(travellerNumber(childNumber[0],"child"));
                     }
+                    child_count.setText(travellerNumber(childNumber[0],"child"));
+                    totalPrice.setText(  KSH + helpers.numberWithCommas(getPrice(adultNumber[0],childNumber[0])));
 
 
                 }
             });
-//
-//
+
             payBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //need to get the proper phone number
-//                    performSTKPush(phoneNumber,String.valueOf(10));
                         Payment payment = new Payment();
                         ArrayList<Transaction> transactions = new ArrayList<>();
                         payment.setAdults((adult_count.getText().toString()));
@@ -357,78 +354,26 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
 
         if(v == favoriteBtn){
 
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            String uid = user.getUid();
-            DatabaseReference savedHotelRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference(Constants.FIREBASE_CHILD_SAVED_HOTELS)
-                    .child(uid);
+            if(!isFavorite){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getUid();
+                DatabaseReference savedHotelRef = FirebaseDatabase
+                        .getInstance()
+                        .getReference(Constants.FIREBASE_CHILD_SAVED_HOTELS)
+                        .child(uid);
 
-            DatabaseReference pushRef = savedHotelRef.push();
-            String pushId = pushRef.getKey();
-            mHotel.setPushID(pushId);
-            pushRef.setValue(mHotel);
-            favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                DatabaseReference pushRef = savedHotelRef.push();
+                String pushId = pushRef.getKey();
+                mHotel.setPushID(pushId);
+                pushRef.setValue(mHotel);
+                favoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+            }
+
+
 
         }
     }
-//    public void performSTKPush(String phone_number, String amount) {
-//        mProgressDialog.setMessage("Sending Mpesa payment request of "+amount+" to " + phone_number);
-//        mProgressDialog.setCancelable(true);
-//        mProgressDialog.setTitle("Please Wait...");
-//        mProgressDialog.setIndeterminate(true);
-//        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        mProgressDialog.show();
-//        String timestamp = utils.getTimestamp();
-//        STKPush stkPush = new STKPush(
-//                BUSINESS_SHORT_CODE,
-//                utils.getPassword(BUSINESS_SHORT_CODE, PASSKEY, timestamp),
-//                timestamp,
-//                TRANSACTION_TYPE,
-//                String.valueOf(amount),
-//                utils.sanitizePhoneNumber(phone_number),
-//                PARTYB,
-//                utils.sanitizePhoneNumber(phone_number),
-//                CALLBACKURL,
-//                "test", //The account reference
-//                "test"  //The transaction description
-//        );
-//
-//        mApiClient.setGetAccessToken(false);
-//
-//
-//        mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
-//            @Override
-//            public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
-//                mProgressDialog.dismiss();
-//                try {
-//                    if (response.isSuccessful()) {
-//                        Toast.makeText(getContext(),"Payment request sent successfully",Toast.LENGTH_LONG).show();
-//                        System.out.println(">>>>>>>>>>>>>>>>>>>>"+response);
-//                        Timber.d("post submitted to API. %s", response.body());
-//
 
-//                    } else {
-//                        Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
-//                        Timber.e("Response %s", response.errorBody().string());
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            @Override
-//            public void onFailure(@NonNull Call<STKPush> call, @NonNull Throwable t) {
-//                mProgressDialog.dismiss();
-//                Toast.makeText(getContext(),"Failed to process payment",Toast.LENGTH_LONG).show();
-//                Timber.e(t);
-//            }
-//        });
-//    }
     public static long getDaysBetweenDates(String start, String end) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
         Date startDate, endDate;
@@ -538,12 +483,12 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
             singular = "child";
         }
         if(number == 1){
-            return String.valueOf(number) + " " + singular;
+            return number + " " + singular;
         }else{
-            return String.valueOf(number) + " " + plural;
+            return number + " " + plural;
         }
     }
-    public Long getPrice(int adultNumber){
-        return getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * adultNumber;
+    public Long getPrice(int adultNumber, int childNumber){
+        return getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * adultNumber + getDaysBetweenDates(fromdate.getText().toString(), todate.getText().toString()) * mHotel.getPrice() * childNumber;
     }
 }

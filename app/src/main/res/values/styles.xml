@@ -26,8 +26,8 @@
             <item name="colorPrimary">@color/whiteC</item>
             <item name="colorPrimaryDark">@color/zoack_green</item>
             <item name="colorAccent">@color/turquoise</item>
-            <item name="windowActionBar">false</item>-->
-                    <item name="windowNoTitle">true</item>
+            <item name="titleTextColor">@color/charcoal</item>
+            <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
         </style>
     <style name="AppTheme.ActionBar.Transparent" parent="AppTheme">
         <item name="android:windowContentOverlay">@null</item>
@@ -61,5 +61,8 @@
 
     <style name="progressBar" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/zoack_green_dark</item>
+    </style>
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more</item>
     </style>
 </resources>

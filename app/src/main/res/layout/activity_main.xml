@@ -21,6 +21,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/whiteC"
-        app:menu="@menu/drawer_menu"/>
+        app:itemTextColor="@color/bottom_nav_color"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:labelVisibilityMode="unlabeled"
+        app:itemBackground="@null"
+        app:itemIconSize="32dp"
+        app:itemRippleColor="@color/zoack_orange_light"
+        app:menu="@menu/bottom_menu"/>
+
+    <ImageView
+        android:id="@+id/profileImg"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        android:translationZ="10dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

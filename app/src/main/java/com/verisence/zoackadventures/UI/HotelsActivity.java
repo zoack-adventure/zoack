@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-public class HotelsActivity extends AppCompatActivity {
+public class HotelsActivity extends BaseActivity {
 
 
     private DatabaseReference hotelsReference;
@@ -52,8 +52,6 @@ public class HotelsActivity extends AppCompatActivity {
 
     @BindView(R.id.hotelsRecyclerView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.contactDrawer)
-    TextView contactDrawer;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -121,17 +119,6 @@ public class HotelsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(manager);
 //        mRecyclerView.smoothScrollToPosition(3);
         mRecyclerView.setAdapter(firebaseAdapter);
-    }
-
-
-
-
-    private void logout() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(HotelsActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 
 

@@ -11,26 +11,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/whiteC"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="4dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Payments"
-                android:textColor="@color/blackText"
-                android:textSize="20sp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/robotoblack_powx"
-                android:layout_gravity="right"
-                android:id="@+id/toolbar_title" />
-
-        </androidx.appcompat.widget.Toolbar>
 
         <RelativeLayout
             android:paddingStart="16dp"

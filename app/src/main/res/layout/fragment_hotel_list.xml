@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorWhiteDark"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/fragement_list_item_main_scene"
-    >
+    android:background="@color/colorWhite"
+    android:layout_marginStart="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical">
+
 
     <ImageView
         android:id="@+id/hotelImageView"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="130pt"
         android:adjustViewBounds="true"
         android:background="@color/black"
         android:scaleType="centerCrop"
         android:src="@drawable/resimg"
         app:layout_constraintBottom_toTopOf="@+id/contentLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentLayout"
@@ -48,9 +58,9 @@
             android:layout_alignParentRight="true"
             android:drawablePadding="10dp"
             android:ellipsize="end"
-            android:textSize="15sp"
             android:fontFamily="@font/lato_medium"
             android:text="Price"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,10 +70,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ellipsize="end"
-            android:textColor="@color/blackText"
             android:fontFamily="@font/lato_medium"
             android:maxLines="10"
-            android:text="Description"
+            tools:text="Description"
+            android:textColor="@color/blackText"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/hotelPrice" />
@@ -76,8 +86,8 @@
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/ic_call_black_24dp"
             android:drawablePadding="4dp"
-            android:gravity="center"
             android:fontFamily="@font/lato_medium"
+            android:gravity="center"
             android:text="(503) 223-1282"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addressTextView" />
@@ -90,8 +100,8 @@
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/ic_map_black_24dp"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
             android:fontFamily="@font/lato_medium"
+            android:gravity="center_vertical"
             android:text="123 SW Best Ever Ave. Portland, Oregon, 97222"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -116,39 +126,47 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/titleLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_layout_bg"
+        android:background="@color/colorWhite"
         android:orientation="horizontal"
-        android:paddingLeft="32dp"
+        android:paddingStart="32dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/contentLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/hotelImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/hotelNameTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
             android:fontFamily="@font/robotobold"
-            android:text="Destination Name"
             android:textColor="@color/blackText"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/favoriteBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Destination Name" />
+
         <ImageView
             android:id="@+id/favoriteBtn"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:layout_marginEnd="24dp"
             android:layout_weight="1"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_star_border_black_24dp" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
 

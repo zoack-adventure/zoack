@@ -19,8 +19,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
-import com.verisence.zoackadventures.UI.HotelDetailActivity;
 import com.verisence.zoackadventures.R;
+import com.verisence.zoackadventures.UI.HotelDetailActivity;
+import com.verisence.zoackadventures.UI.HotelFragment;
 import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.zoack;
 
@@ -28,14 +29,15 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class FirebaseHotelFavoritesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     View mView;
     Context mContext;
 
     String hotelLocation;
+    Hotel selectedHotel;
 
-    public FirebaseHotelViewHolder(@NonNull View itemView) {
+    public FirebaseHotelFavoritesViewHolder(@NonNull View itemView) {
         super(itemView);
         mView = itemView;
         mContext = itemView.getContext();
@@ -43,16 +45,18 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
     }
 
     public void bindHotel(Hotel hotel){
-        ImageView hotelImageView = mView.findViewById(R.id.hotelImageView);
-        ImageView hotelImage = mView.findViewById(R.id.imageHotel);
-        TextView nameTextView = (TextView) mView.findViewById(R.id.hotelNameTextView);
+        selectedHotel = hotel;
+        ImageView hotelImageView = mView.findViewById(R.id.destinationImageView);
+
+        TextView nameTextView = (TextView) mView.findViewById(R.id.destinationNameTextView);
         RatingBar rb = (RatingBar) mView.findViewById(R.id.ratingBar1);
+        rb.setVisibility(View.VISIBLE);
         rb.setRating(Float.parseFloat(String.valueOf(hotel.getRating())));
 
 
 
         Picasso.get().load(hotel.getImageUrl()).into(hotelImageView);
-//        Picasso.get().load(hotel.getImageUrl()).into(hotelImage);
+
 
         nameTextView.setText(hotel.getName());
 
@@ -68,30 +72,16 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
 
     @Override
     public void onClick(View v) {
+
         final ArrayList<Hotel> hotels = new ArrayList<>();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference reference = database.getReference(Constants.FIREBASE_CHILD_HOTELS);
-//        final String location = "Diani";
-        Log.e("HOTELHOLDERONCLICK", "bindHotel: "+hotelLocation);
-        final Query hotelsByLocation = reference.orderByChild("location").equalTo(hotelLocation);
-        hotelsByLocation.keepSynced(true);
-        hotelsByLocation.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    hotels.add(snapshot.getValue(Hotel.class));
-                }
-                int itemPosition = getLayoutPosition();
-                Intent intent = new Intent(mContext, HotelDetailActivity.class);
-                intent.putExtra("position", itemPosition);
-                intent.putExtra("hotels", Parcels.wrap(hotels));
-                mContext.startActivity(intent);
-            }
+        hotels.add(selectedHotel);
+        Intent intent = new Intent(mContext, HotelDetailActivity.class);
+        intent.putExtra("position", 0);
+        intent.putExtra("isFavorite", true);
+        intent.putExtra("hotels", Parcels.wrap(hotels));
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+        mContext.startActivity(intent);
+
     }
 }

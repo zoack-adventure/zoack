@@ -24,6 +24,7 @@ import com.google.firebase.storage.StorageReference;
 import com.littlemango.stacklayoutmanager.StackLayoutManager;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
+import com.verisence.zoackadventures.adapters.FirebaseHotelFavoritesViewHolder;
 import com.verisence.zoackadventures.adapters.FirebaseHotelViewHolder;
 import com.verisence.zoackadventures.models.Hotel;
 import com.verisence.zoackadventures.zoack;
@@ -41,7 +42,7 @@ import static com.google.firebase.storage.FirebaseStorage.getInstance;
 public class FavoritesFragment extends Fragment {
 
     private DatabaseReference hotelsReference;
-    private FirebaseRecyclerAdapter<Hotel, FirebaseHotelViewHolder> firebaseAdapter;
+    private FirebaseRecyclerAdapter<Hotel, FirebaseHotelFavoritesViewHolder> firebaseAdapter;
 
     @BindView(R.id.hotelsRecyclerView)
     RecyclerView mRecyclerView;
@@ -101,23 +102,23 @@ public class FavoritesFragment extends Fragment {
         FirebaseRecyclerOptions<Hotel> options = new FirebaseRecyclerOptions.Builder<Hotel>()
                 .setQuery(query, Hotel.class)
                 .build();
-        firebaseAdapter = new FirebaseRecyclerAdapter<Hotel, FirebaseHotelViewHolder>(options) {
+        firebaseAdapter = new FirebaseRecyclerAdapter<Hotel, FirebaseHotelFavoritesViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull FirebaseHotelViewHolder holder, int position, @NonNull Hotel hotel) {
+            protected void onBindViewHolder(@NonNull FirebaseHotelFavoritesViewHolder holder, int position, @NonNull Hotel hotel) {
                 holder.bindHotel(hotel);
             }
 
             @NonNull
             @Override
-            public FirebaseHotelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.hotel_list_item, parent, false);
-                return new FirebaseHotelViewHolder(view);
+            public FirebaseHotelFavoritesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.destination_list_item, parent, false);
+                return new FirebaseHotelFavoritesViewHolder(view);
             }
         };
 //        mRecyclerView.addItemDecoration(new OverlapDecoration());
-        StackLayoutManager manager = new StackLayoutManager();
+//        StackLayoutManager manager = new StackLayoutManager();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setLayoutManager(layoutManager);
 //        mRecyclerView.smoothScrollToPosition(3);
         mRecyclerView.setAdapter(firebaseAdapter);
     }
