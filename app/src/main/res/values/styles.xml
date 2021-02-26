@@ -12,9 +12,10 @@
 
     <style name="ThemeOverlay.AppCompat.Light" parent="Base.ThemeOverlay.AppCompat.Light"/>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="buttonStyle">@style/Widget.App.Button</item>
 <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
     </style>
 
@@ -22,8 +23,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-            <item name="colorPrimary">@color/whiteC</item>
+        <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+            <item name="colorPrimary">@color/zoack_green</item>
+            <item name="colorOnPrimary">@color/whiteC</item>
             <item name="colorPrimaryDark">@color/zoack_green</item>
             <item name="colorAccent">@color/turquoise</item>
             <item name="titleTextColor">@color/charcoal</item>
@@ -36,8 +38,8 @@
     </style>
 
     <style name="NavigationTab" parent="Widget.Design.TabLayout">
-        <item name="tabSelectedTextColor">@color/light_blue</item>
-        <item name="tabIndicatorColor">@color/light_blue</item>
+        <item name="tabSelectedTextColor">@color/zoack_green</item>
+        <item name="tabIndicatorColor">@color/zoack_green_dark</item>
         <item name="tabTextAppearance">@style/NavigationTabTextAppeareance</item>
     </style>
 
@@ -64,5 +66,35 @@
     </style>
     <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_more</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">#fff</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintAnimationEnabled">true</item>
+        <item name="hintEnabled">true</item>
+    </style>
+
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button" parent="">
+        <item name="colorPrimary">@color/zoack_green</item>
+        <item name="colorOnPrimary">@color/whiteC</item>
+    </style>
+
+
+    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/robotoblack_powx</item>
+        <item name="android:fontFamily">@font/robotoblack_powx</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">8dp</item>
     </style>
 </resources>
