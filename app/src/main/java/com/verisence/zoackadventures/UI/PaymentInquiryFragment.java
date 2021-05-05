@@ -48,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -112,8 +113,16 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assert getArguments() != null;
         mPayment = Parcels.unwrap(getArguments().getParcelable("payment"));
-        communicationDialogs = new CommunicationDialogs(getContext());
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        communicationDialogs = new CommunicationDialogs(getActivity());
+        refreshTransactions();
     }
 
     @Override
@@ -130,7 +139,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
         currentUser = firebaseAuth.getCurrentUser();
 
 
-        refreshTransactions();
+
         getDetails.setOnClickListener(this);
         addPaymentTwo.setOnClickListener(this);
 
@@ -158,9 +167,9 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.equals(addPaymentTwo)){
-            final Dialog dialog = new Dialog(getContext());
+            final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
             dialog.setContentView(R.layout.payment_dialog);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.roundbcg);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.roundbcg);
             TextInputLayout cash  = dialog.findViewById(R.id.amount);
             TextInputLayout number = dialog.findViewById(R.id.phoneNumber);
             payBtn = dialog.findViewById(R.id.payBtn);
@@ -180,6 +189,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
 
 
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        assert user != null;
                         String uid = user.getUid();
                         Transaction transaction = new Transaction();
                         transaction.setValue("0");
@@ -240,6 +250,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
                                             }else if(transactionToUpdate.getStatus().equalsIgnoreCase("failed")){
                                                 dialog.cancel();
                                                 DialogInfo dialogInfo  = new DialogInfo(DialogType.TRANSACTION_NOT_PROCESSED,null);
+//                                                CommunicationDialogs dialogs = new CommunicationDialogs(getActivity());
                                                 communicationDialogs.init(dialogInfo);
                                             }
                                         }
@@ -292,6 +303,7 @@ public class PaymentInquiryFragment extends Fragment implements View.OnClickList
 
     private void refreshTransactions() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
         String uid = currentUser.getUid();
 
         DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference()

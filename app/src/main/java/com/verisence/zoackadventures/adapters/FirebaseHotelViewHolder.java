@@ -44,7 +44,6 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
 
     public void bindHotel(Hotel hotel){
         ImageView hotelImageView = mView.findViewById(R.id.hotelImageView);
-        ImageView hotelImage = mView.findViewById(R.id.imageHotel);
         TextView nameTextView = (TextView) mView.findViewById(R.id.hotelNameTextView);
         RatingBar rb = (RatingBar) mView.findViewById(R.id.ratingBar1);
         rb.setRating(Float.parseFloat(String.valueOf(hotel.getRating())));
@@ -52,7 +51,6 @@ public class FirebaseHotelViewHolder extends RecyclerView.ViewHolder implements 
 
 
         Picasso.get().load(hotel.getImageUrl()).into(hotelImageView);
-//        Picasso.get().load(hotel.getImageUrl()).into(hotelImage);
 
         nameTextView.setText(hotel.getName());
 

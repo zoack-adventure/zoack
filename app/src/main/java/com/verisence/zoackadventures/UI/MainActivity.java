@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 import com.squareup.picasso.Picasso;
 import com.verisence.zoackadventures.Constants;
 import com.verisence.zoackadventures.R;
@@ -56,7 +59,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         actionBar = getSupportActionBar();
-
+        AppCenter.start(getApplication(), "be98ca16-5e8f-4eea-8201-974fc32d64bc",
+                Analytics.class, Crashes.class);
 
 
         Bundle extras = getIntent().getExtras();
