@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release_sign {
+            storeFile file('/Users/mbuguamwaura/Documents/zoack/zoack_keystore.jks')
+            storePassword 'Zadvent0099'
+            keyAlias 'zoack'
+            keyPassword 'Zadvent0099'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.verisence.zoackadventures"
@@ -30,8 +38,10 @@ android {
     buildTypes {
 
         release {
-            minifyEnabled true
+            minifyEnabled false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release_sign
         }
     }
     buildTypes.each {
@@ -110,6 +120,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    def appCenterSdkVersion = '4.1.0'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
 }
 
 
